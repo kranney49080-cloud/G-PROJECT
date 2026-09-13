@@ -6,7 +6,7 @@ Upgrade the existing Tree Production Dashboard into a practical local project to
 1. loads Tree 01 state from the repository manifest;
 2. saves approvals, notes, image paths, versions, harvest states, dependencies, and Unreal verification back into the repository manifest;
 3. can safely commit and push only the dashboard/manifest changes to GitHub using the user's existing local Git credentials;
-4. launches itself in the user's browser with one click;
+4. provides an easy local launcher **without automatically opening a browser window**;
 5. preserves the current cozy dark forest visual design;
 6. does not require Astra credits or any paid service.
 
@@ -28,6 +28,7 @@ Existing manifest: `Tools/TreeProductionDashboard/tree_01_manifest.json`
 - If Git cannot push safely, show a clear UI error instead of trying destructive recovery.
 - Preserve all current dashboard functionality unless it is superseded by a better implementation.
 - Keep the dashboard usable in local-only mode if GitHub is unavailable.
+- **Do not automatically launch or open the user's web browser.**
 
 ---
 
@@ -49,7 +50,8 @@ The server should:
 - read/write `tree_01_manifest.json` on disk;
 - expose a very small API to the dashboard;
 - optionally run safe Git commands for a deliberate Save & Push action;
-- open the browser automatically when started with the launcher.
+- print the dashboard URL clearly in the console when started;
+- **never automatically open a browser window.**
 
 Do not create a public network service.
 
@@ -290,7 +292,7 @@ Show success/failure clearly.
 
 ---
 
-# Launcher / "pop it up" requirement
+# Launcher requirement — NO automatic browser opening
 
 Create:
 
@@ -304,9 +306,10 @@ Double-clicking `launch_dashboard.bat` should:
 2. locate Python using `py` first, then `python`;
 3. start `server.py`;
 4. wait until the server responds;
-5. automatically open the dashboard URL in the user's default browser;
+5. **print the dashboard URL clearly in the console, but do not open it automatically**;
 6. keep a small console window available for server/error messages;
-7. print a clear message explaining how to stop the server.
+7. print a clear message explaining how to stop the server;
+8. tell the user to copy/paste or click the printed URL manually.
 
 The PowerShell script can perform the actual logic, with the BAT file serving as the easy double-click entry point.
 
@@ -332,8 +335,8 @@ If the user opens `index.html` directly without `server.py`:
 
 OpenCode must test and report evidence for all of the following:
 
-1. `launch_dashboard.bat` opens the dashboard in a browser.
-2. Dashboard loads without JavaScript errors.
+1. `launch_dashboard.bat` starts the dashboard server and prints a valid local URL without opening a browser.
+2. Dashboard loads without JavaScript errors when that URL is opened manually.
 3. `GET /api/status` works.
 4. `GET /api/manifest` reads the repository manifest.
 5. Editing notes/specs and pressing Save to Project changes `tree_01_manifest.json`.
@@ -355,10 +358,10 @@ When finished, provide a short report containing:
 - files modified;
 - tests run and their results;
 - any dependencies introduced;
-- exact URL opened locally;
+- exact local dashboard URL for the user to open manually;
 - exact Git commit hash if a commit was made;
 - anything still incomplete.
 
-Then **launch the dashboard automatically** so the user sees it immediately.
+**Do not launch or open the browser automatically.**
 
-Do not merely describe how to implement this. Implement it, test it, and open it.
+Do not merely describe how to implement this. Implement it, test it, and leave the dashboard server ready for the user to open manually if appropriate.
