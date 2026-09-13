@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tree Production Board</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Game Project • Environment Pipeline</p>
+        <h1>🌳 First Tree — Production Board</h1>
+        <p class="subtitle">Track the first harvestable 2.5D forest tree from concept to in-game test.</p>
+      </div>
+      <button id="resetBtn" class="ghost">Reset board</button>
+    </header>
+
+    <section class="hero-card">
+      <div class="hero-copy">
+        <span class="pill">Current milestone</span>
+        <h2 id="currentMilestone">Approve standing hero tree</h2>
+        <p>Art first, then lock the technical interface before producing variants.</p>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-meta"><span>Core progress</span><strong id="progressText">0 / 5</strong></div>
+        <div class="progress"><div id="progressBar" class="progress-bar"></div></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Core asset set</p>
+          <h2>Tree 01</h2>
+        </div>
+        <div class="legend">
+          <span><i class="dot in-progress"></i> In progress</span>
+          <span><i class="dot waiting"></i> Waiting</span>
+          <span><i class="dot locked"></i> Locked</span>
+          <span><i class="dot complete"></i> Complete</span>
+        </div>
+      </div>
+
+      <div id="assetGrid" class="asset-grid"></div>
+    </section>
+
+    <section class="workflow-card">
+      <p class="eyebrow">Recommended order</p>
+      <div class="workflow">
+        <span>Tree shape</span><b>→</b><span>Approve</span><b>→</b><span>Oblique</span><b>→</b><span>Stump / Felled</span><b>→</b><span>In-game test</span><b>→</b><span>Canopy</span>
+      </div>
+    </section>
+
+    <section class="notes-card">
+      <div class="notes-head">
+        <div>
+          <p class="eyebrow">Production notes</p>
+          <h2>Tree 01 Notes</h2>
+        </div>
+        <span id="saveState">Saved locally</span>
+      </div>
+      <textarea id="notes" placeholder="Add revision notes, branch-width changes, canopy notes, harvest-state decisions..."></textarea>
+    </section>
+  </main>
+
+  <template id="assetTemplate">
+    <article class="asset-card">
+      <div class="asset-icon"></div>
+      <div class="asset-body">
+        <div class="asset-topline">
+          <div>
+            <h3 class="asset-title"></h3>
+            <p class="asset-purpose"></p>
+          </div>
+          <span class="status-badge"></span>
+        </div>
+        <p class="asset-unlocks"></p>
+        <div class="asset-actions">
+          <button class="status-cycle">Change status</button>
+          <button class="approve">Approve</button>
+        </div>
+      </div>
+    </article>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>
