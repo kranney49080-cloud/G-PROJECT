@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 2,
+  "treeId": "TREE_01",
+  "version": "v01",
+  "masterReference": {
+    "imagePath": "",
+    "colorSpecPath": "../../Art/Environment/Trees/Master_Reference/FOREST_TREE_MASTER_COLOR_SPEC.md",
+    "palette": ["#08191F", "#081F27", "#082B32", "#0C343D", "#071218", "#11242C", "#192F37", "#0D4047", "#134A55", "#223D44", "#2A4D53", "#467D89", "#336F78", "#335D66", "#1C5A64", "#60929D"]
+  },
+  "specs": {
+    "height": "50 ft",
+    "trunkWidth": "TBD",
+    "canopyWidth": "TBD",
+    "cutHeight": "TBD",
+    "rootRadius": "TBD",
+    "mode": "2.5D hybrid"
+  },
+  "interfaceContract": {
+    "rootBasePivot": false,
+    "worldScale": false,
+    "trunkCollision": false,
+    "chopRegion": false,
+    "separateCanopy": false,
+    "localCanopyHooks": false,
+    "stumpConvention": false,
+    "materialSlots": false,
+    "pcgBounds": false
+  },
+  "assets": [
+    {"id":"standing","title":"Standing Hero Tree","status":"in-progress","core":true,"version":"v01","imagePath":"","note":""},
+    {"id":"oblique","title":"Oblique / Side View","status":"waiting","core":true,"version":"v01","imagePath":"","note":""},
+    {"id":"felled","title":"Cut / Felled Tree","status":"waiting","core":true,"version":"v01","imagePath":"","note":""},
+    {"id":"stump","title":"Stump","status":"waiting","core":true,"version":"v01","imagePath":"","note":""},
+    {"id":"cutsurface","title":"Cut Surface","status":"waiting","core":true,"version":"v01","imagePath":"","note":""},
+    {"id":"localcanopy","title":"Local Canopy","status":"locked","core":false,"version":"v01","imagePath":"","note":""},
+    {"id":"sharedcanopy","title":"Shared Forest Canopy","status":"locked","core":false,"version":"v01","imagePath":"","note":""},
+    {"id":"logs","title":"Harvested Logs","status":"optional","core":false,"version":"v01","imagePath":"","note":""},
+    {"id":"damage","title":"Chop Damage Marks","status":"optional","core":false,"version":"v01","imagePath":"","note":""}
+  ],
+  "harvestStates": [
+    {"name":"Standing","asset":"standing"},
+    {"name":"Falling","asset":"felled"},
+    {"name":"Stump","asset":"stump"},
+    {"name":"Regrowth","asset":"future"}
+  ],
+  "canopy": {"sharedPercent":75,"localPercent":25},
+  "unrealChecks": {"imported":false,"scale":false,"material":false,"collision":false,"harvest":false,"canopyRemoval":false,"performance":false},
+  "notes": ""
+}
