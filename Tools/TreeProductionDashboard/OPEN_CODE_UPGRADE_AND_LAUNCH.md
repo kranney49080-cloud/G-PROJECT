@@ -1,183 +1,41 @@
 # OpenCode Work Order — Tree Production Dashboard V3
 
-## Objective
-Upgrade the existing Tree Production Dashboard into a practical local project tool that:
+## Goal
+Upgrade the existing Tree Production Dashboard into the main control panel for Tree 01.
 
-1. loads Tree 01 state from the repository manifest;
-2. saves approvals, notes, image paths, versions, harvest states, dependencies, and Unreal verification back into the repository manifest;
-3. can safely commit and push only the dashboard/manifest changes to GitHub using the user's existing local Git credentials;
-4. provides an easy local launcher **without automatically opening a browser window**;
-5. preserves the current cozy dark forest visual design;
-6. does not require Astra credits or any paid service.
+Keep the current cozy dark-teal forest look, but make the dashboard substantially more useful for production.
 
 Repository: `kranney49080-cloud/G-PROJECT`
-Dashboard folder: `Tools/TreeProductionDashboard/`
-Existing manifest: `Tools/TreeProductionDashboard/tree_01_manifest.json`
+Dashboard: `Tools/TreeProductionDashboard/`
+Manifest: `Tools/TreeProductionDashboard/tree_01_manifest.json`
 
----
+## Required features
 
-## Non-negotiable safety rules
+### Project status
+Show whether the dashboard is connected to the local project or running in local-only mode. Also show current branch, unsaved changes, uncommitted manifest changes, and last successful project save/push.
 
-- Inspect the existing dashboard files and manifest before editing.
-- Do not delete or rewrite unrelated project files.
-- Do not use `git add .` or stage unrelated files.
-- Never force-push.
-- Never store a GitHub token, password, credential, or secret in HTML, JavaScript, JSON, source code, localStorage, or the repository.
-- Use the user's existing local Git authentication / Git Credential Manager for push operations.
-- If the repository has unrelated uncommitted changes, do not include them in the dashboard commit.
-- If Git cannot push safely, show a clear UI error instead of trying destructive recovery.
-- Preserve all current dashboard functionality unless it is superseded by a better implementation.
-- Keep the dashboard usable in local-only mode if GitHub is unavailable.
-- **Do not automatically launch or open the user's web browser.**
+### Tree 01 manifest
+Treat `tree_01_manifest.json` as the source of truth for Tree 01. Preserve existing useful data and extend the schema as needed.
 
----
+Track at least:
+- Tree 01 status
+- last updated time
+- master reference path
+- palette specification path
+- palette statistics path
+- height
+- trunk width
+- canopy width
+- root radius
+- cut height
+- texture resolution
+- target card count
+- poly budget
+- notes
+- approval history
 
-# Architecture
-
-Implement a tiny local companion server rather than putting GitHub credentials in the browser.
-
-Preferred implementation: Python standard library only, if practical.
-
-Create:
-
-`Tools/TreeProductionDashboard/server.py`
-
-The server should:
-
-- serve the dashboard files locally;
-- bind to `127.0.0.1` only;
-- default to port `8765` and find the next free port if necessary;
-- read/write `tree_01_manifest.json` on disk;
-- expose a very small API to the dashboard;
-- optionally run safe Git commands for a deliberate Save & Push action;
-- print the dashboard URL clearly in the console when started;
-- **never automatically open a browser window.**
-
-Do not create a public network service.
-
----
-
-# Required local API
-
-Implement equivalent endpoints to these names unless there is a strong technical reason to rename them.
-
-## `GET /api/status`
-Return JSON with at least:
-
-- `connected: true`
-- current repository branch
-- repository root path
-- manifest path
-- whether the working tree contains unrelated changes
-- whether the manifest has unsaved/uncommitted changes
-- latest commit hash if available
-
-## `GET /api/manifest`
-Read and return the current `tree_01_manifest.json` from the repository.
-
-## `POST /api/manifest`
-Validate and atomically save the submitted manifest to `tree_01_manifest.json`.
-
-Requirements:
-
-- write to a temporary file first, then replace;
-- reject malformed JSON;
-- preserve a useful schema;
-- add/update a `lastUpdated` timestamp;
-- do not commit automatically.
-
-## `POST /api/commit-push`
-This action must only occur after the user explicitly presses a button such as **Save & Push**.
-
-Behavior:
-
-1. save/validate manifest first;
-2. determine current branch;
-3. stage only explicitly permitted dashboard files, preferably only `Tools/TreeProductionDashboard/tree_01_manifest.json` unless dashboard source files themselves were intentionally edited;
-4. create a commit such as `Update Tree 01 production manifest`;
-5. push the current branch normally;
-6. never use force push;
-7. return success/failure, commit hash, and human-readable error text.
-
-If there are unrelated changes in the repository, they must remain untouched and unstaged.
-
----
-
-# Manifest
-
-Treat `tree_01_manifest.json` as the source of truth for Tree 01.
-
-If fields are missing, extend the manifest in a backwards-compatible way. It should be able to represent at least:
-
-```json
-{
-  "id": "tree_01",
-  "name": "Tree 01",
-  "status": "in-progress",
-  "lastUpdated": "ISO_TIMESTAMP",
-  "masterReference": {
-    "path": "",
-    "paletteSpec": "Art/Environment/Trees/Master_Reference/FOREST_TREE_MASTER_COLOR_SPEC.md",
-    "paletteStats": "Art/Environment/Trees/Master_Reference/FOREST_TREE_MASTER_COLOR_STATS.csv"
-  },
-  "specs": {
-    "heightFeet": 50,
-    "trunkWidthFeet": null,
-    "canopyWidthFeet": null,
-    "cutHeightFeet": null,
-    "notes": ""
-  },
-  "assets": {
-    "standing": {},
-    "oblique": {},
-    "felled": {},
-    "stump": {},
-    "cutSurface": {},
-    "localCanopy": {},
-    "sharedCanopy": {},
-    "logs": {},
-    "damageMarks": {}
-  },
-  "harvestStates": {},
-  "unrealVerification": {},
-  "approvalHistory": []
-}
-```
-
-Each asset should be able to store:
-
-- status;
-- current version;
-- image path;
-- approval state;
-- approval notes;
-- dependencies;
-- optional dimensions/specification data.
-
-Do not overwrite existing useful manifest data while extending it.
-
----
-
-# Dashboard V3 UI requirements
-
-Preserve the current dark teal / cozy forest look.
-
-Add the following.
-
-## 1. Project connection header
-At the top show:
-
-- **Project connected** / **Local-only mode**
-- branch name
-- unsaved indicator
-- uncommitted indicator
-- last successful GitHub push
-
-## 2. Actual asset image previews
-Each asset card should support a project-relative image path and display the actual image when available.
-
-Cards:
-
+### Asset cards
+Create cards for:
 - Standing Hero Tree
 - Oblique / Side View
 - Felled Tree
@@ -188,73 +46,65 @@ Cards:
 - Harvested Logs
 - Chop Damage Marks
 
-If no image exists, show an attractive placeholder rather than a broken-image icon.
+Each card should support:
+- real image preview from a project-relative path
+- status
+- version
+- approval state
+- approval notes
+- dependencies
+- revision notes
 
-## 3. Large asset inspector
-Clicking a card should open a larger inspector/modal with:
+If no image is assigned, show a clean placeholder.
 
-- large image preview;
-- version number;
-- status;
-- approval state;
-- image path;
-- revision notes;
-- dependencies;
-- Approve button;
-- Needs Revision button.
+### Large asset inspector
+Clicking an asset card should open a larger inspector with the image, version, status, approval state, notes, dependencies, and buttons for **Approve** and **Needs Revision**.
 
-## 4. Master Reference panel
-Add a permanent reference section showing:
+Each approval/revision action must append a timestamped entry to approval history rather than deleting old history.
 
-- master reference path/image if available;
-- palette-spec link/path;
-- palette-stats link/path;
-- core color rule: `blue-black → dark teal → slate teal → blue-grey → pale cyan-grey`;
-- reminder: warm brown is an undertone, not the dominant bark color.
+### Master reference panel
+Show:
+- master reference image/path
+- palette spec path
+- palette stats path
+- color rule: `blue-black → dark teal → slate teal → blue-grey → pale cyan-grey`
+- reminder that warm brown is an undertone, not the dominant bark color
 
-Do not duplicate the entire statistical file into the UI; link/read the project files instead where practical.
+### Tree specifications
+Add editable fields for:
+- height
+- trunk width
+- canopy width
+- root radius
+- cut height
+- texture resolution
+- target card count
+- poly budget
+- notes
 
-## 5. Tree specifications
-Editable fields for:
-
-- height;
-- trunk width;
-- canopy width;
-- root radius;
-- cut height;
-- intended texture resolution;
-- target card count;
-- target geometry/poly budget if used;
-- freeform notes.
-
-## 6. Harvest state preview
-Display the sequence visually:
+### Harvesting states
+Display this sequence visually:
 
 `Standing → Damaged → Falling → Stump + Logs → Regrowth`
 
-Each state should indicate whether the required asset/mechanic is ready.
+Show readiness for each state.
 
-## 7. Canopy ownership panel
+### Canopy ownership
 Clearly distinguish:
+- **Tree-local canopy** — disappears/fades with the harvested tree
+- **Shared forest canopy** — remains when a single tree is harvested
 
-- **Tree-local canopy** — disappears/fades with this tree;
-- **Shared forest canopy** — remains when one tree is harvested.
+Use 20–30% local canopy and 70–80% shared canopy as editable starting targets, not hard rules.
 
-Show the current design targets of roughly 20–30% local canopy and 70–80% shared canopy as editable targets, not hard rules.
+### Dependencies
+Default behavior:
+- Standing Tree approval unlocks Oblique, Felled, Stump, and Cut Surface for production.
+- Local Canopy stays locked until the standing structure is approved.
+- Shared Canopy is later-stage work and should not block the first harvesting prototype.
+- Manual override is allowed, but show a warning.
 
-## 8. Dependencies and locks
-Default production dependency behavior:
-
-- Standing Tree must be approved before Oblique, Felled, Stump, and Cut Surface are treated as production-ready.
-- Local Canopy remains locked until the standing structure is approved.
-- Shared Forest Canopy is later-stage work and should not block the first harvest-loop prototype.
-- Unreal final verification should remain incomplete until the core asset set is ready.
-
-Allow manual override, but warn before overriding a dependency.
-
-## 9. Unreal verification panel
+### Unreal verification
 Track:
-
 - Imported
 - Scale correct
 - Material correct
@@ -265,103 +115,81 @@ Track:
 - Stump/resource state works
 - Performance checked
 
-## 10. Version / approval history
-Every approval or Needs Revision action should append a small entry to `approvalHistory` with:
+### Save controls
+Keep three clear actions:
+- **Save Locally**
+- **Save to Project**
+- **Save & Push to GitHub**
 
-- timestamp;
-- asset ID;
-- version;
-- action;
-- note.
+Do not include unrelated project files in dashboard saves or pushes.
 
-Do not delete earlier history when a new version is added.
+## Local companion server
+Create `server.py` if needed so the dashboard can safely read/write the project manifest from the local repository.
 
-## 11. Save controls
-Provide three visibly different actions:
+Requirements:
+- local machine only
+- use `127.0.0.1`
+- default to port `8765` and use another free local port if necessary
+- serve the dashboard
+- read/write the Tree 01 manifest
+- expose only the small API needed by the dashboard
+- print the local dashboard URL clearly in the console
 
-### Save Locally
-Browser/local fallback only.
+## Local-only fallback
+Opening `index.html` directly should still work.
 
-### Save to Project
-POST to `/api/manifest` and save the repo manifest without committing.
+In local-only mode:
+- render the dashboard normally
+- use localStorage
+- display **Local-only mode**
+- disable project-save/push controls
+- avoid repeated errors
 
-### Save & Push to GitHub
-POST to `/api/commit-push` only after a confirmation dialog showing exactly which file(s) will be committed.
-
-Show success/failure clearly.
-
----
-
-# Launcher requirement — NO automatic browser opening
-
+## Launcher
 Create:
-
 - `launch_dashboard.ps1`
 - `launch_dashboard.bat`
 
-## Windows behavior
-Double-clicking `launch_dashboard.bat` should:
+The launcher should:
+1. find the dashboard folder
+2. locate Python using `py` first, then `python`
+3. start the local server
+4. wait until it is ready
+5. print the dashboard URL clearly
+6. keep the console available for status/errors
+7. explain how to stop the server
 
-1. locate the dashboard folder relative to the script;
-2. locate Python using `py` first, then `python`;
-3. start `server.py`;
-4. wait until the server responds;
-5. **print the dashboard URL clearly in the console, but do not open it automatically**;
-6. keep a small console window available for server/error messages;
-7. print a clear message explaining how to stop the server;
-8. tell the user to copy/paste or click the printed URL manually.
+### Important
+**Do not automatically open or launch the user's browser.**
 
-The PowerShell script can perform the actual logic, with the BAT file serving as the easy double-click entry point.
+The user will open the printed URL manually.
 
-If Python cannot be found, display a clear message and pause rather than silently failing.
+## Verification before stopping
+Test and report:
+1. launcher starts the server without opening a browser
+2. console prints a valid local URL
+3. dashboard loads without JavaScript errors when opened manually
+4. project status endpoint works
+5. manifest loading works
+6. Save to Project persists edits
+7. refresh reloads saved values
+8. approvals append history
+9. valid image paths show previews
+10. local-only mode works
+11. project push does not include unrelated files
+12. report a commit hash if one is created
+13. state clearly if anything could not be tested
 
-Do not require administrator privileges.
+## Final report
+When finished, report:
+- files created
+- files modified
+- tests and results
+- dependencies introduced
+- exact local dashboard URL
+- commit hash if applicable
+- anything incomplete
 
----
+Implement and test the work. Do not just describe it.
 
-# Local-only fallback
-
-If the user opens `index.html` directly without `server.py`:
-
-- the dashboard should still render;
-- localStorage functionality should still work;
-- clearly display **Local-only mode**;
-- disable or hide Save to Project / Save & Push;
-- do not throw repeated console/network errors.
-
----
-
-# Verification checklist — OpenCode must complete before stopping
-
-OpenCode must test and report evidence for all of the following:
-
-1. `launch_dashboard.bat` starts the dashboard server and prints a valid local URL without opening a browser.
-2. Dashboard loads without JavaScript errors when that URL is opened manually.
-3. `GET /api/status` works.
-4. `GET /api/manifest` reads the repository manifest.
-5. Editing notes/specs and pressing Save to Project changes `tree_01_manifest.json`.
-6. Refreshing the page reloads the saved manifest values.
-7. Asset approval appends approval history.
-8. Image-path field shows a preview when given a valid local project image.
-9. Local-only mode still works when `index.html` is opened directly.
-10. Save & Push stages no unrelated project files.
-11. If push is tested, report the exact commit hash.
-12. If push cannot be tested safely, do not fake success; state the exact reason.
-
----
-
-# Final response required from OpenCode
-
-When finished, provide a short report containing:
-
-- files created;
-- files modified;
-- tests run and their results;
-- any dependencies introduced;
-- exact local dashboard URL for the user to open manually;
-- exact Git commit hash if a commit was made;
-- anything still incomplete.
-
-**Do not launch or open the browser automatically.**
-
-Do not merely describe how to implement this. Implement it, test it, and leave the dashboard server ready for the user to open manually if appropriate.
+**Do not auto-launch the browser.**
