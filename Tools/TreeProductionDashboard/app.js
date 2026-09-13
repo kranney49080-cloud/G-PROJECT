@@ -1,92 +1,20 @@
-const defaultAssets = [
-  {id:'standing', icon:'🌳', title:'Standing Hero Tree', purpose:'Master trunk + major branch design', unlocks:'Unlocks scale, silhouette, palette, pivots and all derived states.', status:'in-progress', core:true},
-  {id:'oblique', icon:'🔄', title:'Oblique / Side View', purpose:'Depth reference for the trunk and major branches', unlocks:'Unlocks hybrid / 3D construction and believable thickness.', status:'waiting', core:true},
-  {id:'felled', icon:'🪓', title:'Cut / Felled Tree', purpose:'Falling and post-cut visual state', unlocks:'Unlocks the harvesting transition and simplified falling asset.', status:'waiting', core:true},
-  {id:'stump', icon:'🪵', title:'Stump', purpose:'Persistent post-harvest world state', unlocks:'Unlocks regrowth, stump collision and harvested-state continuity.', status:'waiting', core:true},
-  {id:'cutsurface', icon:'🟠', title:'Cut Surface', purpose:'Painterly fresh-cut cross section', unlocks:'Unlocks stump top and felled-trunk cut-face consistency.', status:'waiting', core:true},
-  {id:'localcanopy', icon:'🍃', title:'Local Canopy', purpose:'Tree-owned branch / leaf cards', unlocks:'Removes with the tree to create a believable canopy opening.', status:'locked', core:false},
-  {id:'sharedcanopy', icon:'🌲', title:'Shared Forest Canopy', purpose:'Large overhead 2.5D canopy layers', unlocks:'Builds the forest ceiling while remaining independent of one tree.', status:'locked', core:false},
-  {id:'logs', icon:'🪵', title:'Harvested Logs', purpose:'Optional physical wood resource pieces', unlocks:'Use only if harvested wood exists physically in the world.', status:'optional', core:false},
-  {id:'damage', icon:'⚔️', title:'Chop Damage Marks', purpose:'Axe marks and progressive damage feedback', unlocks:'Polish layer after the base harvest loop works.', status:'optional', core:false}
-];
-
-const statuses = ['in-progress','waiting','locked','complete','optional'];
-const labels = { 'in-progress':'In progress', waiting:'Waiting', locked:'Locked', complete:'Complete', optional:'Optional' };
-const key = 'treeProductionBoard.v1';
-
-function loadState(){
-  try { return JSON.parse(localStorage.getItem(key)) || {}; }
-  catch { return {}; }
-}
-
-let state = loadState();
-if(!state.assets) state.assets = structuredClone(defaultAssets);
-if(typeof state.notes !== 'string') state.notes = '';
-
-const grid = document.querySelector('#assetGrid');
-const template = document.querySelector('#assetTemplate');
-const progressBar = document.querySelector('#progressBar');
-const progressText = document.querySelector('#progressText');
-const currentMilestone = document.querySelector('#currentMilestone');
-const notes = document.querySelector('#notes');
-const saveState = document.querySelector('#saveState');
-
-function save(){
-  localStorage.setItem(key, JSON.stringify(state));
-  saveState.textContent = 'Saved locally';
-}
-
-function nextMilestone(){
-  const core = state.assets.filter(a=>a.core);
-  const next = core.find(a=>a.status !== 'complete');
-  return next ? `Finish: ${next.title}` : 'Core tree asset set complete';
-}
-
-function render(){
-  grid.innerHTML='';
-  for(const asset of state.assets){
-    const node = template.content.firstElementChild.cloneNode(true);
-    node.querySelector('.asset-icon').textContent = asset.icon;
-    node.querySelector('.asset-title').textContent = asset.title;
-    node.querySelector('.asset-purpose').textContent = asset.purpose;
-    node.querySelector('.asset-unlocks').textContent = asset.unlocks;
-    const badge = node.querySelector('.status-badge');
-    badge.textContent = labels[asset.status];
-    badge.className = `status-badge status-${asset.status}`;
-
-    node.querySelector('.status-cycle').addEventListener('click', ()=>{
-      const i = statuses.indexOf(asset.status);
-      asset.status = statuses[(i+1)%statuses.length];
-      save(); render();
-    });
-    node.querySelector('.approve').addEventListener('click', ()=>{
-      asset.status='complete';
-      save(); render();
-    });
-    grid.appendChild(node);
-  }
-
-  const core = state.assets.filter(a=>a.core);
-  const done = core.filter(a=>a.status==='complete').length;
-  progressText.textContent = `${done} / ${core.length}`;
-  progressBar.style.width = `${(done/core.length)*100}%`;
-  currentMilestone.textContent = nextMilestone();
-}
-
-notes.value = state.notes;
-let timer;
-notes.addEventListener('input',()=>{
-  state.notes = notes.value;
-  saveState.textContent = 'Saving…';
-  clearTimeout(timer);
-  timer=setTimeout(save,250);
-});
-
-document.querySelector('#resetBtn').addEventListener('click',()=>{
-  if(!confirm('Reset all tree-board statuses and notes?')) return;
-  state = {assets: structuredClone(defaultAssets), notes:''};
-  notes.value='';
-  save(); render();
-});
-
+const defaultManifest={schemaVersion:2,treeId:'TREE_01',version:'v01',masterReference:{imagePath:'',colorSpecPath:'../../Art/Environment/Trees/Master_Reference/FOREST_TREE_MASTER_COLOR_SPEC.md',palette:['#08191F','#081F27','#082B32','#0C343D','#071218','#11242C','#192F37','#0D4047','#134A55','#223D44','#2A4D53','#467D89','#336F78','#335D66','#1C5A64','#60929D']},specs:{height:'50 ft',trunkWidth:'TBD',canopyWidth:'TBD',cutHeight:'TBD',rootRadius:'TBD',mode:'2.5D hybrid'},interfaceContract:{rootBasePivot:false,worldScale:false,trunkCollision:false,chopRegion:false,separateCanopy:false,localCanopyHooks:false,stumpConvention:false,materialSlots:false,pcgBounds:false},assets:[{id:'standing',icon:'🌳',title:'Standing Hero Tree',purpose:'Master trunk + major branch design',unlocks:'Scale, silhouette, palette, pivots and every derived state.',status:'in-progress',core:true,version:'v01',imagePath:'',note:''},{id:'oblique',icon:'🔄',title:'Oblique / Side View',purpose:'Depth reference for trunk and major branches',unlocks:'Hybrid/3D construction and believable thickness.',status:'waiting',core:true,version:'v01',imagePath:'',note:''},{id:'felled',icon:'🪓',title:'Cut / Felled Tree',purpose:'Falling and post-cut visual state',unlocks:'Harvesting transition and simplified falling asset.',status:'waiting',core:true,version:'v01',imagePath:'',note:''},{id:'stump',icon:'🪵',title:'Stump',purpose:'Persistent post-harvest world state',unlocks:'Regrowth, stump collision and harvested-state continuity.',status:'waiting',core:true,version:'v01',imagePath:'',note:''},{id:'cutsurface',icon:'🟠',title:'Cut Surface',purpose:'Painterly fresh-cut cross section',unlocks:'Stump top and felled-trunk cut-face consistency.',status:'waiting',core:true,version:'v01',imagePath:'',note:''},{id:'localcanopy',icon:'🍃',title:'Local Canopy',purpose:'Tree-owned branch / leaf cards',unlocks:'Removes with the tree to create a believable canopy opening.',status:'locked',core:false,version:'v01',imagePath:'',note:''},{id:'sharedcanopy',icon:'🌲',title:'Shared Forest Canopy',purpose:'Large overhead 2.5D canopy layers',unlocks:'Builds the forest ceiling independent of a single tree.',status:'locked',core:false,version:'v01',imagePath:'',note:''},{id:'logs',icon:'🪵',title:'Harvested Logs',purpose:'Optional physical wood resources',unlocks:'Only needed if harvested wood exists physically.',status:'optional',core:false,version:'v01',imagePath:'',note:''},{id:'damage',icon:'⚔️',title:'Chop Damage Marks',purpose:'Axe marks / progressive damage',unlocks:'Polish after base harvesting loop works.',status:'optional',core:false,version:'v01',imagePath:'',note:''}],harvestStates:[{name:'Standing',asset:'standing'},{name:'Falling',asset:'felled'},{name:'Stump',asset:'stump'},{name:'Regrowth',asset:'future'}],canopy:{sharedPercent:75,localPercent:25},unrealChecks:{imported:false,scale:false,material:false,collision:false,harvest:false,canopyRemoval:false,performance:false},notes:''};
+const labels={'in-progress':'In progress',waiting:'Waiting',locked:'Locked',complete:'Approved',optional:'Optional'};const statuses=['in-progress','waiting','locked','complete','optional'];const key='treeProductionBoard.v2';
+const clone=o=>JSON.parse(JSON.stringify(o));function merge(base,extra){if(!extra)return clone(base);const out=clone(base);for(const k of Object.keys(extra)){if(Array.isArray(extra[k]))out[k]=extra[k];else if(extra[k]&&typeof extra[k]==='object'&&out[k]&&typeof out[k]==='object')out[k]=merge(out[k],extra[k]);else out[k]=extra[k]}return out}
+function load(){try{return merge(defaultManifest,JSON.parse(localStorage.getItem(key)))}catch{return clone(defaultManifest)}}let state=load();
+const $=s=>document.querySelector(s);const grid=$('#assetGrid'),template=$('#assetTemplate'),notes=$('#notes'),saveState=$('#saveState');
+function save(msg='Saved locally'){localStorage.setItem(key,JSON.stringify(state));saveState.textContent=msg;$('#syncState').textContent='Local changes active — export manifest to commit them'}
+function nextMilestone(){const next=state.assets.filter(a=>a.core).find(a=>a.status!=='complete');return next?`Finish: ${next.title}`:'Core tree asset set complete'}
+function renderPalette(){const p=$('#palette');p.innerHTML='';state.masterReference.palette.forEach(hex=>{const d=document.createElement('div');d.className='swatch';d.style.background=hex;d.innerHTML=`<span>${hex}</span>`;p.appendChild(d)})}
+function tryImage(img,path){if(!path){img.style.display='none';return}img.onload=()=>img.style.display='block';img.onerror=()=>img.style.display='none';img.src=path}
+function renderAssets(){grid.innerHTML='';for(const asset of state.assets){const n=template.content.firstElementChild.cloneNode(true);n.querySelector('.asset-icon').textContent=asset.icon;n.querySelector('.asset-title').textContent=asset.title;n.querySelector('.asset-purpose').textContent=asset.purpose;n.querySelector('.asset-unlocks').textContent=asset.unlocks;const b=n.querySelector('.status-badge');b.textContent=labels[asset.status];b.className=`status-badge status-${asset.status}`;n.querySelector('.version-label').textContent=asset.version||'v01';const path=n.querySelector('.version-input');path.value=asset.imagePath||'';path.addEventListener('change',()=>{asset.imagePath=path.value.trim();save();render()});const an=n.querySelector('.asset-note');an.value=asset.note||'';an.addEventListener('input',()=>{asset.note=an.value;save()});tryImage(n.querySelector('.asset-image'),asset.imagePath);n.querySelector('.status-cycle').onclick=()=>{asset.status=statuses[(statuses.indexOf(asset.status)+1)%statuses.length];save();render()};n.querySelector('.approve').onclick=()=>{asset.status='complete';asset.note=asset.note||`Approved ${asset.version||'v01'}`;save();render()};grid.appendChild(n)}}
+function renderContract(){const box=$('#contractList');box.innerHTML='';const names={rootBasePivot:'Root-base pivot',worldScale:'World scale locked',trunkCollision:'Trunk collision zone',chopRegion:'Chop / hit region',separateCanopy:'Trunk and canopy separated',localCanopyHooks:'Local canopy hooks',stumpConvention:'Falling / stump convention',materialSlots:'Material slots locked',pcgBounds:'Predictable PCG bounds'};Object.entries(names).forEach(([k,v])=>{const l=document.createElement('label');l.className='check-item';l.innerHTML=`<input type="checkbox" ${state.interfaceContract[k]?'checked':''}> ${v}`;l.querySelector('input').onchange=e=>{state.interfaceContract[k]=e.target.checked;save()};box.appendChild(l)})}
+function renderUnreal(){const box=$('#unrealChecks');box.innerHTML='';const names={imported:'Imported',scale:'Scale verified',material:'Material verified',collision:'Collision verified',harvest:'Harvest loop works',canopyRemoval:'Local canopy removal works',performance:'Performance verified'};Object.entries(names).forEach(([k,v])=>{const l=document.createElement('label');l.className='check-item';l.innerHTML=`<input type="checkbox" ${state.unrealChecks[k]?'checked':''}> ${v}`;l.querySelector('input').onchange=e=>{state.unrealChecks[k]=e.target.checked;save()};box.appendChild(l)})}
+function renderFlow(){const box=$('#harvestFlow');box.innerHTML='';state.harvestStates.forEach(s=>{const a=state.assets.find(x=>x.id===s.asset);const d=document.createElement('div');d.className='flow-state';d.innerHTML=`<strong>${s.name}</strong><span>${a?a.title:'Future regrowth asset'}</span>`;box.appendChild(d)})}
+function renderSpecs(){Object.entries(state.specs).forEach(([k,v])=>{const el=document.querySelector(`[data-spec="${k}"]`);if(el){el.value=v;el.onchange=()=>{state.specs[k]=el.value;save()}}});$('#treeVersion').textContent=state.version}
+function renderReference(){const frame=$('#referenceFrame');const old=frame.querySelector('img');if(old)old.remove();$('#masterImagePath').textContent=state.masterReference.imagePath||'not assigned';if(state.masterReference.imagePath){const img=document.createElement('img');img.alt='Master tree reference';img.onerror=()=>img.remove();img.src=state.masterReference.imagePath;frame.appendChild(img)}}
+function render(){renderAssets();renderPalette();renderContract();renderUnreal();renderFlow();renderSpecs();renderReference();const core=state.assets.filter(a=>a.core),done=core.filter(a=>a.status==='complete').length;$('#progressText').textContent=`${done} / ${core.length}`;$('#progressBar').style.width=`${done/core.length*100}%`;$('#currentMilestone').textContent=nextMilestone();$('#sharedCanopy').value=state.canopy.sharedPercent;$('#sharedPct').textContent=`${state.canopy.sharedPercent}%`;$('#localPct').textContent=`${100-state.canopy.sharedPercent}%`;notes.value=state.notes||''}
+$('#sharedCanopy').oninput=e=>{state.canopy.sharedPercent=Number(e.target.value);state.canopy.localPercent=100-state.canopy.sharedPercent;$('#sharedPct').textContent=`${state.canopy.sharedPercent}%`;$('#localPct').textContent=`${state.canopy.localPercent}%`;save()};notes.addEventListener('input',()=>{state.notes=notes.value;saveState.textContent='Saving…';clearTimeout(window.noteTimer);window.noteTimer=setTimeout(save,250)});
+$('#exportBtn').onclick=()=>{const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='tree_01_manifest.json';a.click();URL.revokeObjectURL(a.href);saveState.textContent='Manifest exported'};$('#importBtn').onclick=()=>$('#manifestFile').click();$('#manifestFile').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{state=merge(defaultManifest,JSON.parse(r.result));save('Manifest imported');render()}catch{alert('That file is not valid JSON.')}};r.readAsText(f)};
+$('#workOrderBtn').onclick=async()=>{const pending=state.assets.filter(a=>a.status!=='complete'&&a.status!=='optional').map(a=>`${a.title}: ${a.status}${a.note?` — ${a.note}`:''}`).join('\n');const txt=`TREE 01 WORK ORDER\nCurrent milestone: ${nextMilestone()}\nSpecs: ${JSON.stringify(state.specs)}\nPending assets:\n${pending}\nColor authority: blue-black → dark teal → slate teal → blue-grey → pale cyan-grey. Warm brown undertone only.\nRespect harvesting/canopy interface contract in tree_01_manifest.json.`;await navigator.clipboard.writeText(txt);saveState.textContent='AI work order copied'};$('#resetBtn').onclick=()=>{if(confirm('Reset all local Tree 01 dashboard changes?')){state=clone(defaultManifest);save('Reset complete');render()}};
 render();
