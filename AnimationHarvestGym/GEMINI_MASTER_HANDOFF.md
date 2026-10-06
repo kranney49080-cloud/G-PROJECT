@@ -2,7 +2,7 @@
 ## UE5.8 Native-Source Animation Research Project
 ### Naruto Shippuden: Ultimate Ninja Storm 4 + Naruto to Boruto: Shinobi Striker + Dragon Ball: Sparking! ZERO
 
-**Revision:** 2026-10-06 — Motion Vocabulary + Selective Audio + Fast Enlarged Broly update  
+**Revision:** 2026-10-06 — Unattended Windows Automation + Mandatory Per-Move Audio + Fast Enlarged Broly update  
 **Project name:** `AnimationHarvestGym`  
 **Engine:** Unreal Engine 5.8  
 **Primary operator for this handoff:** Gemini  
@@ -127,7 +127,8 @@ A source game is not complete until all selected material for that game has pass
 - Original source character/creature rigs imported.
 - Required original weapons/props imported.
 - Selected animations converted/imported successfully.
-- Every selected animation plays correctly on its ORIGINAL rig in UE5.8.
+- Associated source SFX for every selected animation/move are harvested and synchronized; required processing is completed in the same move/group pass.
+- Every selected animation plays correctly on its ORIGINAL rig in UE5.8 with its synchronized SFX available in the Playback Hub.
 - Character/creature animation groups are created.
 - Friendly move-name labels are assigned without destroying original source IDs.
 - Hit reactions/knockbacks for opened characters are indexed.
@@ -220,6 +221,134 @@ gym_id
 ```
 
 
+## 2.4 Windows Terminal + Antigravity + Pinwright — Persistent Unattended Automation Contract
+
+This project is intended to run for long periods **without the owner having to approve every normal command**. Gemini must operate through the supported Windows Terminal / Antigravity / Pinwright connection as a persistent automation session.
+
+### Required execution model
+
+1. Launch the Gemini/Antigravity work session from **Windows Terminal / PowerShell**.
+2. Confirm the **Pinwright connection/handshake** before doing any Unreal automation.
+3. Use Antigravity's supported persistent/background execution mode if one is available. **Do not invent undocumented CLI flags.**
+4. If the interface exposes a persistent permission choice such as `Always allow`, `Don't ask again`, or equivalent, use that persistent approval for the allowlisted project operations below so the owner is not repeatedly interrupted.
+5. Keep the Windows Terminal session alive/minimized when required by the toolchain. Do not assume a Gemini/Antigravity process will survive a closed terminal unless the tool explicitly documents that behavior.
+6. Pinwright is the Unreal automation executor. Gemini/Antigravity is the planner/supervisor. Windows Terminal is the persistent execution host.
+
+### Approved unattended scope
+
+Gemini has standing permission to perform the following **without asking again**, provided the operation remains inside the approved Animation Harvest Gym workspace and does not cross a protected/destructive boundary:
+
+- Create folders/files for `AnimationHarvestGym`, metadata, logs, manifests, caches, previews, and generated helper scripts.
+- Read/copy/move/rename project/source working files inside the approved project/source-vault roots.
+- Launch and control Unreal Editor for `AnimationHarvestGym`.
+- Use Pinwright to open maps, load original source characters, select/play animations, inspect assets, collect metadata, take thumbnails, and run repeatable validation steps.
+- Launch approved helper tools used by the verified source route: PowerShell, Python, Blender, FFmpeg, FModel, XFBIN/community tools, and other already-approved project utilities.
+- Convert/import selected source assets into the Gym project after the representative-path validation gate passes.
+- Extract and process the required source SFX for each harvested move.
+- Write/update local JSON/CSV/Markdown manifests and state files.
+- Run Git status/add/commit/push for safe project documentation/scripts/metadata that contain no proprietary source-game assets.
+- Resume an interrupted phase from the last checkpoint.
+- Retry a known-good transient operation once when the failure is clearly environmental.
+
+### Project-root rule
+
+Gemini must identify and record the actual roots during bootstrap. The preferred layout is:
+
+```text
+FAST PROJECT DRIVE:
+  <SSD_ROOT>\AnimationHarvestGym\
+
+COLD SOURCE VAULT / LARGE RAW EXTRACTIONS:
+  <SOURCE_VAULT_ROOT>\ANIMATION_HARVEST_SOURCE_VAULT\
+
+AUTOMATION STATE:
+  <PROJECT>\Automation\State\
+  <PROJECT>\Automation\Logs\
+  <PROJECT>\Automation\Temp\
+```
+
+If the owner already has established D:/F: project locations, Gemini may use them after verifying the paths exist and are writable. **Never overwrite an existing unrelated project because a path was assumed.**
+
+### One-time permission bootstrap
+
+At the beginning of the job, Gemini must perform one permission bootstrap instead of asking for dozens of later approvals:
+
+- Verify Windows Terminal/PowerShell can read/write the project roots.
+- Verify Antigravity can execute normal project commands.
+- Verify Pinwright can connect to and control the new UE5.8 project.
+- Grant/use persistent `Always allow` / `Don't ask again` permission for the approved project-local command families when the interface provides such a control.
+- If elevation is genuinely required for an approved tool path or process-control action, use an elevated Windows Terminal session for that task; **do not disable UAC, Windows Defender, firewall protections, or other Windows security globally.**
+- Record the permission/bootstrap result in `Automation/State/PERMISSIONS.md`.
+
+### Operations that are NOT globally authorized
+
+Even in unattended mode, Gemini must stop rather than silently doing any of the following:
+
+- Delete or overwrite files outside the approved project/source-vault/temp roots.
+- Format, repartition, encrypt/decrypt, or mass-delete a drive.
+- Disable UAC, Defender, firewall, or Windows security controls.
+- Modify unrelated registry keys, user accounts, credentials, startup services, or machine-wide policies.
+- Install drivers or unrelated machine-wide software.
+- Destroy/overwrite the immutable raw source vault.
+- Commit/push extracted proprietary meshes, animations, audio, textures, packages, or copyrighted source-game content to GitHub.
+- Begin retargeting. Retargeting remains locked to Claude/Codex after owner approval.
+
+### Background supervisor that Gemini must create
+
+During Phase 0, Gemini must create a small resumable automation supervisor under:
+
+```text
+AnimationHarvestGym/Automation/
+  Start-HarvestSupervisor.ps1
+  Resume-Harvest.ps1
+  Stop-HarvestSupervisor.ps1
+  State/harvest_state.json
+  State/PERMISSIONS.md
+  Logs/
+```
+
+The supervisor is not allowed to invent game extraction logic. It only coordinates already-proven commands/tools and persists state.
+
+`harvest_state.json` must include at least:
+
+```text
+current_game_lock
+current_phase
+current_character_or_creature
+current_group
+current_animation_source_id
+current_move_label
+current_audio_status
+last_completed_step
+last_checkpoint_time
+retry_count
+last_error
+status = RUNNING | WAITING_TOOL | BLOCKED | COMPLETE | OWNER_APPROVAL_GATE
+```
+
+### Resume/idempotency rules
+
+- Write a checkpoint after every successfully completed animation + SFX pair and after every completed group.
+- On restart, read `harvest_state.json` before doing anything else.
+- Never duplicate an import merely because the session restarted. Check the manifest and UE asset state first.
+- Never overwrite a validated source asset; create a new derived/process version when necessary.
+- Only one active supervisor may mutate the project at a time; create a lock/heartbeat file and refuse a second writer.
+- If Unreal crashes, reopen **only** `AnimationHarvestGym`, restore the last group, and resume from the next incomplete item.
+- If Pinwright loses connection, attempt one clean reconnect. If it fails again, set the state to `BLOCKED_PINWRIGHT` and write the exact error/log location.
+- If an extractor/converter fails twice on the same hypothesis, stop guessing, record evidence, and mark the item blocked/unknown rather than looping indefinitely.
+
+### Owner interruption policy
+
+Do **not** ask the owner for routine confirmations. Continue automatically through approved project-local work. Only request owner input for:
+
+- the explicit retarget approval gate;
+- a destructive/security-sensitive action outside the approved scope;
+- an ambiguous source choice that would materially change what is harvested;
+- a hard blocker that remains after the documented retry/evidence procedure.
+
+The purpose of this contract is to let the Animation Harvest Gym run in the background with a reliable audit trail instead of requiring constant manual input.
+
+
 # 3. Gemini Scope — Allowed Work
 
 Gemini MAY:
@@ -290,8 +419,9 @@ Only these operators are allowed to begin retargeting after approval:
 6. Each animation has a human-readable label associated with the **actual move name/behavior** while preserving its original source identifier.
 7. Required hit reactions/knockbacks are grouped and labeled.
 8. Sparking ZERO clips have ground/flight and foot-contact metadata where required.
-9. Broly transformation source evidence is complete.
-10. Snake, giant-stomp, Tapion/Janemba overhead, and Krillin Destructo Disk priority sets are complete or explicitly marked missing/unknown.
+9. Every selected harvested move has its associated source SFX harvested, processed if needed, and native-sync verified; any `AUDIO_UNRESOLVED` item is explicitly blocked or owner-approved.
+10. Broly transformation source evidence is complete.
+11. Snake, giant-stomp, Tapion/Janemba overhead, and Krillin Destructo Disk priority sets are complete or explicitly marked missing/unknown.
 
 ### Mandatory stop point
 
@@ -705,45 +835,160 @@ A full cinematic/super move may be unsuitable, but its startup, anticipation, fi
 
 ---
 
-## 10.2 Selective Source-Audio Harvest and Timing — NOT FOR EVERY ANIMATION
+## 10.2 Mandatory Per-Move Source SFX Harvest, Processing, and Sync — EVERY HARVESTED MOVE
 
-**Do not harvest sound for every animation.** Audio collection is selective and only applies when the source audio materially helps us understand timing, weight, impact, ability identity, transformation rhythm, creature motion, or synchronization.
+**Sound-effect harvesting is NOT optional. If a move/animation is accepted into the harvest, its associated source sound effects must be harvested in the same source pass before that move is considered complete.**
 
-Each animation record gets:
+This applies to **every selected harvested move**, including locomotion, attacks, reactions, knockbacks, guards, buffs, barriers, spells, transformations, creature motion, snake motion, giant motion, landings, draw/sheath, transitions, and cinematics whose motion states we keep.
+
+The rule is simple:
 
 ```text
-AUDIO_PRIORITY: YES | NO
+IF WE KEEP THE MOVE -> WE KEEP ITS SOURCE SFX + TIMING
 ```
 
-If `AUDIO_PRIORITY = YES`, Gemini may locally harvest/associate the minimum useful original source audio cues and record exact sync timing. Source audio remains local research material and is **never committed to GitHub**.
+Do not close a character/source block with animation complete and audio deferred to "later." Animation and its source SFX are one synchronized harvest unit.
 
-Priority audio candidates include:
+### What must be collected for every harvested move
 
-- Broly transformed locomotion: heavy footfalls, acceleration contacts, landings, stomps, large-body impacts, transformation beats/roar when useful to timing.
-- Giant stomp attacks and giant landings.
-- Krillin Destructo Disk creation/charge/release when audio reveals the action phases.
-- Tapion / Janemba high-sword sequences when audio helps determine whether the source purpose is attack, buff, barrier, spell, or charge.
-- Snake slither/raise/lunge/bite/impact cues when they materially clarify whole-body timing.
-- Selected heavy sword contacts, barrier activation/collapse, transformation peaks, grab/release/impact, or exceptional knockbacks.
+Gemini must search for and associate all source SFX that belong to the move, as applicable:
 
-Do **not** spend harvest time extracting ordinary voice lines, ambience, UI audio, or a complete sound set for every animation.
+- left/right footsteps and foot plants
+- acceleration/braking contacts
+- jump/takeoff/landing contacts
+- cloth/body movement accents when clearly tied to the move
+- weapon draw/sheath sounds
+- weapon whooshes/swings
+- weapon clashes/contacts
+- hit/impact sounds
+- knockback/slide/ground-impact sounds
+- charge/build-up sounds
+- projectile/ability creation sounds
+- release/fire sounds
+- barrier/buff activation and sustain/collapse cues
+- transformation/power-up cues
+- energy/aura pulses that are specifically tied to the kept move
+- giant stomp/footstep/landing impacts
+- snake slither/body-drag/raise/lunge/bite/impact cues
+- creature movement/attack SFX tied to the kept animation
+- grab/throw/release impacts
+- any other sound cue that is visibly/synchronously part of the selected move
 
-For each selected sound-critical move, record:
+Voice/dialogue and music are **not** the target deliverable, but if the only available reference is a mixed source containing voice/music, preserve that raw synchronized reference and then isolate/process the move SFX as far as practical. Do not discard the raw reference.
+
+### Audio source hierarchy
+
+Use this order:
+
+1. Direct source-game sound asset/cue/event tied to the move.
+2. Source cue graph/event relationship that identifies layered sounds.
+3. Clean in-game move playback capture when the source asset relationship cannot be isolated directly.
+4. Processed/stem-isolated derivative from the clean playback capture when necessary.
+
+Never claim an SFX is the exact source cue when it was only inferred from a mixed recording. Label the provenance accurately.
+
+### Immutable raw + processed derivative rule
+
+For every harvested move, keep:
+
+```text
+AUDIO/<GAME>/<CHARACTER_OR_CREATURE>/<MOVE_LABEL>/
+  RAW/
+    untouched source cue/audio or raw synchronized reference
+  PROCESSED/
+    decoded/cleaned/isolated working copies
+  SYNC/
+    final native-animation synchronized reference
+  audio_manifest.json
+```
+
+Never overwrite the raw source audio. Any cleanup, resampling, channel conversion, stem isolation, trimming, or timing adjustment creates a derived file with provenance.
+
+### Required processing timing — DO IT NOW, NOT LATER
+
+If audio processing is required for the SFX to correctly match the native harvested animation, perform that processing **during the same move/group harvest**, before the move is marked complete.
+
+Allowed/expected processing when needed:
+
+- decode proprietary/container audio into a lossless working format;
+- create a WAV working copy, preferably 48 kHz PCM, while preserving the raw original;
+- split a layered cue into identifiable SFX components when the source relationship proves the layers;
+- isolate SFX from a clean mixed playback reference when no direct source cue is available;
+- remove unrelated silence or capture lead-in from the processed derivative;
+- correct channel layout;
+- resample only the processed copy;
+- align the processed SFX to the native animation timeline;
+- create loop regions for true sustained cues such as aura/barrier/slither layers when the source demonstrates a loop;
+- document any unavoidable residual voice/music contamination.
+
+### Do not hide animation conversion errors with audio editing
+
+The native animation timing is authoritative. If the converted/imported animation unexpectedly runs at a different duration from the source, **fix the animation conversion**. Do not time-stretch the SFX merely to conceal a bad animation conversion.
+
+Later, if Claude/Codex intentionally retimes a production animation after the owner approves retargeting, they may create a production-derived retimed audio copy. The native synchronized SFX master remains unchanged.
+
+### Required timing markers
+
+For each move, record every meaningful audio event against the native animation:
 
 ```text
 source_audio_id
 sound_label
-sound_type = footstep | impact | charge | release | barrier | transform | roar | slither | bite | landing | other
-animation_frame_or_time
-sound_start_offset
+sound_type
+source_provenance = direct_asset | cue_event | gameplay_capture | isolated_from_mix
+animation_source_id
+animation_frame
+animation_time_seconds
+sound_start_offset_ms
 sound_peak_or_contact_time
 sound_end_time
-relationship = exact_sync | approximate_sync | loop | layered | unknown
+loop_start/end if applicable
+left_or_right_contact if applicable
+relationship = exact_sync | layered | loop | approximate | unresolved
+processing_performed
+processed_file
+raw_file
+notes
 ```
 
-The goal is to preserve **timing references** so later production audio can recreate the weight and rhythm without guessing.
+The Playback Hub must be able to play the native animation **with its synchronized harvested SFX** and provide a mute/unmute audio toggle for diagnostic viewing.
 
----
+### Audio completion statuses
+
+Every selected move must end with one of these explicit states:
+
+```text
+AUDIO_DIRECT_PASS        # exact source cue/event harvested and synced
+AUDIO_MIX_PASS           # clean source playback reference captured and synced
+AUDIO_PROCESSED_PASS     # processing/isolation required and finished; raw preserved
+AUDIO_LAYERED_PASS       # multiple source layers mapped and synced
+AUDIO_UNRESOLVED         # searched but source/mix cannot yet be reliably associated
+```
+
+`AUDIO_UNRESOLVED` is a blocker for normal handoff completion unless the owner explicitly accepts the exception. It is not permission to silently omit audio.
+
+### Audio is part of every move card
+
+Each Visual Library / catalog entry must show:
+
+```text
+MOVE LABEL
+SOURCE ANIMATION ID
+AUDIO STATUS
+SOURCE AUDIO ID(S) / provenance
+SYNC VERIFIED: YES/NO
+PROCESSING: NONE | DECODE | CLEAN | STEM/ISOLATE | LAYER | OTHER
+```
+
+### Broly and giants
+
+Broly's transformed movement remains fast. Harvest the transformed movement SFX at the **actual source cadence** so later weight design does not accidentally slow him down. For each transformed locomotion/combat move, capture the footstep/landing/impact onsets and intervals along with the animation.
+
+Downstream production weight may add stronger low-frequency impact, longer impact tails, ground debris, larger spatial presence, and contact emphasis while preserving fast cadence. Do not create "heaviness" by delaying footsteps or slowing the whole animation.
+
+### Git rule for audio
+
+Extracted source-game audio is local research/source material and must **not** be committed to GitHub. Git may contain only manifests, timing metadata, source IDs, processing recipes, and safe automation scripts.
 
 # 11. Mandatory Hit-Reaction Harvest — BOTH GAMES
 
@@ -752,8 +997,7 @@ This is now a **global rule for every character pass**.
 When a source character is opened, Gemini must also search for useful:
 
 - Light hit reactions
-- Heavy hit reactions
-- Front reactions
+- Heavy hit reactions- Front reactions
 - Back reactions
 - Left reactions
 - Right reactions
@@ -938,10 +1182,17 @@ Downstream Claude/Codex should preserve **fast, violent acceleration and attack 
 - larger stride and momentum rather than globally slowing the animation
 - heavier stops/braking and recovery where appropriate
 - optional stride/root-distance correction after retarget so the larger legs do not foot-slide
+- preserve source step cadence and attack-entry timing even when the transformed target becomes larger
+- use stronger contact transients and deeper/longer impact tails instead of slower timing
+- use larger dust/debris/ground-response scale on major plants, stops, landings, and stomps
+- allow more torso/shoulder/arm secondary lag after fast acceleration so the body reads as massive without reducing speed
+- use heavier braking/inertia on stops and recovery only where the source motion supports it
+- consider subtle foot compression/plant emphasis and camera micro-impulse on major contacts, not constant camera shake
+- keep fast attack startups when they are part of Broly's identity; sell mass in follow-through, recoil, contact response, spatial audio, and ground reaction
 
 **Do not globally time-stretch transformed Broly slower.** Weight should come primarily from contact, momentum, secondary motion, sound, ground response, and recovery—not from making him sluggish.
 
-Selected transformed footfalls/landings/stomps are `AUDIO_PRIORITY = YES`; ordinary unrelated Broly clips do not automatically require audio harvest.
+Every harvested Broly move must include its associated source SFX and native timing. For transformed Broly, pay special attention to footfall cadence, acceleration contacts, landings, stomps, heavy impacts, transformation beats, and any motion-linked energy/creature cues. Preserve fast cadence; do not manufacture weight by delaying audio.
 
 Gemini's job is to deliver the native Broly evidence and timing so the downstream AI can reproduce the growth correctly while preserving the character's speed.
 
@@ -997,7 +1248,8 @@ GYM_TAPION_READY
 GYM_TAPION_DRAW
 GYM_TAPION_SHEATH
 GYM_TAPION_GROUNDED_SLASH
-GYM_TAPION_HIGH_SWORD_POSEGYM_TAPION_OVERHEAD_RAISE
+GYM_TAPION_HIGH_SWORD_POSE
+GYM_TAPION_OVERHEAD_RAISE
 GYM_TAPION_OVERHEAD_HOLD
 GYM_TAPION_OVERHEAD_ACTION
 GYM_TAPION_OVERHEAD_RECOVERY
@@ -1014,7 +1266,7 @@ OUR_POSSIBLE_USE
 
 Track pelvis, feet, shoulder line, hand relationship, sword angle, root displacement, planted foot, entry/exit pose, event frames, and `UPPER_BODY_CANDIDATE`.
 
-If associated audio materially reveals the move's phase or purpose, mark it `AUDIO_PRIORITY = YES`; otherwise do not harvest audio for it.
+Harvest and synchronize the associated source SFX for every kept Tapion sequence. Use the audio timing as evidence when determining whether the source purpose is attack, buff, barrier, spell/channel, charge, guard, cinematic, or another ability.
 
 ---
 
@@ -1044,7 +1296,7 @@ TAPION vs JANEMBA vs TRUNKS — HIGH / OVERHEAD SWORD BODY LANGUAGE
 
 Do not force all three into the same source-purpose label. Compare stance, sword height, anticipation, commitment, root travel, feet, torso, timing, and possible reuse.
 
-If associated audio materially reveals the sequence timing/purpose, mark it `AUDIO_PRIORITY = YES`; otherwise no audio harvest is required.
+Harvest and synchronize the associated source SFX for every kept Janemba sequence. Use audio timing as evidence when determining the verified source purpose; do not pre-label the motion as an attack.
 
 ---
 
@@ -1084,7 +1336,7 @@ For each stomp, record the exact foot-contact frame so downstream systems can at
 - Camera impulse
 - Sound
 
-Giant stomp/landing clips are strong `AUDIO_PRIORITY` candidates because foot-contact timing and low-frequency impact help define weight. This is selective audio harvesting, not a requirement to extract sound for every giant animation.
+Every harvested giant move includes its associated source SFX. For stomps/landings in particular, mark the exact foot-contact frame and synchronize the source impact/footstep layers so later damage, camera, dust, debris, and production audio can use the same event timing.
 
 Do not confuse ordinary heavy walking with an actual attack stomp; tag them separately.
 
@@ -1213,7 +1465,7 @@ GYM_SS_SNAKE_VARIANTS
 
 The desired outcome is a reusable **snake motion reference library** that can later feed an original creature rig for the game.
 
-For high-value snake abilities, selective audio may be harvested for slither rhythm, raise/emerge timing, bite contact, impact, hiss/roar, or ability synchronization. Do not harvest audio for every snake animation.
+For high-value snake abilities, per-move audio may be harvested for slither rhythm, raise/emerge timing, bite contact, impact, hiss/roar, or ability synchronization. Do not harvest audio for every snake animation.
 
 ---
 
@@ -1398,7 +1650,7 @@ Once Sparking ZERO begins, remain on Sparking ZERO until all selected DBZ materi
 - Record possible reuse separately from source purpose
 - Hit reactions / knockbacks
 - Ground/flight classification
-- Selective audio timing only if it materially clarifies the high-sword sequence
+- Mandatory per-move SFX harvest + native sync for every kept high-sword sequence; use the synchronized audio as evidence when classifying source purpose
 
 ## Phase 11 — Super Janemba — Sparking ZERO
 
@@ -1410,7 +1662,7 @@ Once Sparking ZERO begins, remain on Sparking ZERO until all selected DBZ materi
 - Record possible reuse separately from source purpose
 - Hit reactions / knockbacks
 - Ground/flight classification
-- Selective audio timing only if it materially clarifies the high-sword sequence
+- Mandatory per-move SFX harvest + native sync for every kept high-sword sequence; use the synchronized audio as evidence when classifying source purpose
 
 ## Phase 12 — Dabura — Sparking ZERO
 
@@ -1478,7 +1730,7 @@ Priority:
 - Giant/large-character stomp candidates
 - Hit reactions / knockbacks
 - **Fast enlarged locomotion/combat evidence:** acceleration, dash/run speed, stride length, cadence, fast heavy attack entries, direction changes, and stops
-- Mark selected transformed footfalls/landings/stomps/major impacts for selective source-audio timing
+- Harvest and synchronize source SFX for every kept Broly move; transformed footfalls/landings/stomps/major impacts require exact onset/contact timing and processing in the same pass
 
 **Design target:** enlarged Broly must still feel fast. Do not infer that larger means slower. Weight should later come from stronger contacts, momentum, secondary motion, ground response, selected heavy footsteps/impacts, and recovery—not global animation slowdown.
 
@@ -1720,7 +1972,10 @@ Use a structured record similar to:
   "our_possible_use": [],
   "upper_body_candidate": "yes|no|maybe",
   "quality_tier": "GOLD|SILVER|REFERENCE_ONLY|REJECT",
-  "audio_priority": "YES|NO",
+  "audio_required": true,
+  "audio_status": "AUDIO_DIRECT_PASS|AUDIO_MIX_PASS|AUDIO_PROCESSED_PASS|AUDIO_LAYERED_PASS|AUDIO_UNRESOLVED",
+  "source_audio_ids": [],
+  "audio_sync_verified": "YES|NO",
   "notes": ""
 }
 ```
@@ -1741,8 +1996,7 @@ Never invent numeric values. Unknown values remain `UNKNOWN` until measured.
   "native_grounded": true,
   "native_flight": false,
   "root_displacement_cm": "MEASURED_OR_UNKNOWN",
-  "knockdown": false,
-  "recovery_clip": "SOURCE_ID_OR_UNKNOWN",
+  "knockdown": false,  "recovery_clip": "SOURCE_ID_OR_UNKNOWN",
   "motion_matching_candidate": "yes|maybe|no",
   "native_playback": "PASS"
 }
@@ -1806,9 +2060,9 @@ DOWNSTREAM:
 
 ---
 
-# 27.1 Selective Audio Timing Record
+# 27.1 Mandatory Per-Move Audio Timing Record
 
-Only create this record when `AUDIO_PRIORITY = YES`.
+Create this record for **every harvested move**. Audio is part of the move's completion contract, not an optional enhancement.
 
 ```json
 {
@@ -1824,7 +2078,7 @@ Only create this record when `AUDIO_PRIORITY = YES`.
 }
 ```
 
-**No global audio-harvest requirement exists.** The default is `AUDIO_PRIORITY = NO` unless the sound materially contributes to the selected motion research.
+**Global audio-harvest requirement:** every harvested move requires an associated source-SFX record and native sync. If no direct cue is available, capture/process a clean source playback reference and document the provenance.
 
 ---
 
@@ -1919,6 +2173,10 @@ WEAPON / PROP / CREATURE RELATIONSHIP:
 ROOT / DISPLACEMENT NOTES:
 GROUND / FLIGHT CLASSIFICATION:
 FOOT CONTACT NOTES:
+AUDIO STATUS:
+SOURCE AUDIO ID(S) / PROVENANCE:
+AUDIO SYNC VERIFIED: YES/NO
+AUDIO PROCESSING PERFORMED:
 HIT REACTION ASSETS FOUND:
 USEFUL STATE RANGES:
 VISUAL LIBRARY ENTRY:
@@ -1937,8 +2195,8 @@ Gemini's animation-harvest job is complete when:
 - `AnimationHarvestGym` exists as a separate UE5.8 project with an optimized native Playback Hub.
 - The source-game lock order was respected: Storm 4 -> Shinobi Striker -> Naruto external reference -> Sparking ZERO -> post-harvest consolidation.
 - Existing Mifune, Sasuke The Last, and Rock Lee material was audited before any duplicate extraction.
-- Every selected harvested animation is playable natively before retargeting.
-- Every selected animation is inside its individual character/creature group and has a friendly move-name label associated with the original source ID.
+- Every selected harvested animation is playable natively before retargeting, with its synchronized harvested source SFX available for playback.
+- Every selected animation is inside its individual character/creature group, has a friendly move-name label associated with the original source ID, and has a linked per-move audio manifest/status.
 - Selected original characters and original skeletons import cleanly.
 - Selected animations play natively in UE5.8 on the original rigs.
 - Source identifiers/provenance are preserved.
@@ -1952,7 +2210,7 @@ Gemini's animation-harvest job is complete when:
 - Shinobi Striker whole-snake motions are captured.
 - Hit reactions and knockbacks are harvested from both game families and organized for downstream Motion Matching.
 - Sparking ZERO clips have grounded/flight metadata and foot-contact notes.
-- Selective source-audio timing has been recorded for designated sound-critical motions only; ordinary animations do not require audio harvesting.
+- Every selected harvested move has its associated source SFX harvested, processed as needed during the same move/group pass, and synchronized to the native animation; unresolved audio is explicitly blocked or owner-approved as an exception.
 - Motion DNA, physical-motion/source-purpose separation, transition/whiff/defense candidates, event timing, and Gold/Silver priority metadata are available for high-value clips.
 - The Visual Library can find motions by behavior without requiring the user to remember the source character.
 - A separate AI can begin retargeting without reopening source archives to rediscover basic information.
@@ -1989,4 +2247,7 @@ Gemini's animation-harvest job is complete when:
 24. **Harvest motion vocabulary, not just named attacks: transitions, whiffs, defense, paired victim motion, event timing, upper-body candidates, locomotion personalities, and useful cinematic states matter.**
 25. **Separate observable PHYSICAL MOTION from verified SOURCE PURPOSE and from OUR POSSIBLE USE.**
 26. **Enlarged Broly must still feel fast; do not make him heavy by globally slowing his animations.**
-27. **Sound harvest is SELECTIVE, not global. Do not extract sounds for every animation. Only designated `AUDIO_PRIORITY = YES` moves get source-audio timing research.**
+27. **Sound harvest is MANDATORY for every harvested move. If we keep the move, we harvest its associated source SFX, process it as needed during that same move/group pass, and synchronize it to the native animation before the move is complete.**
+28. **Gemini/Antigravity + Pinwright must run under the persistent Windows Terminal automation contract so routine approved project work continues without constant owner prompts.**
+29. **Use persistent allow/always-approve controls only for the documented project-local allowlist; never disable Windows security or grant silent destructive access outside the project/source-vault roots.**
+30. **Write resumable checkpoints after every animation+SFX pair and every completed group so background work can safely resume after crashes/restarts.**
