@@ -2,7 +2,7 @@
 ## UE5.8 Native-Source Animation Research Project
 ### Naruto Shippuden: Ultimate Ninja Storm 4 + Naruto to Boruto: Shinobi Striker + Dragon Ball: Sparking! ZERO
 
-**Revision:** 2026-10-06  
+**Revision:** 2026-10-06 — Game-Lock + Retarget Approval Gate update  
 **Project name:** `AnimationHarvestGym`  
 **Engine:** Unreal Engine 5.8  
 **Primary operator for this handoff:** Gemini  
@@ -64,6 +64,162 @@ Do not import the full game archives into Unreal. Index first, then import only 
 
 ---
 
+## 2.1 Existing Harvested Material — Audit First, Do Not Restart
+
+The owner already has source material for:
+
+- **Mifune** — already harvested to some degree and should be treated as existing source material.
+- **Sasuke The Last** — already harvested to some degree and should be treated as the Sasuke priority source/form.
+- **Rock Lee** — some useful material already exists.
+
+Gemini's first action in `AnimationHarvestGym` is to **inventory, import, verify, and organize what already exists before extracting duplicates**.
+
+For each existing source set, assign one of these statuses:
+
+```text
+AVAILABLE_LOCAL
+NATIVE_PASS
+PARTIAL_MISSING_MOVES
+MISSING_OR_CORRUPT
+NEEDS_REEXTRACT
+UNKNOWN
+```
+
+Rules:
+
+- Do not re-harvest an animation merely because the project is new.
+- Reuse the owner's existing Mifune, Sasuke The Last, and Rock Lee source material when it is valid.
+- Only extract/reconvert missing, corrupt, unverified, or genuinely new moves.
+- Preserve the original source identifiers and record where the existing material came from.
+- Mifune remains the first character group to complete, but Phase 1 is now an **audit + completion pass**, not an automatic full re-extraction.
+- Sasuke work must specifically include the **Sasuke The Last** material the owner already has.
+- Rock Lee is a **partial existing set**: inventory it, validate it, and fill only the missing priority behaviors.
+
+---
+
+## 2.2 Source-Game Lock Order — Finish One Game Before Touching the Next
+
+**Do not bounce back and forth between source games.**
+
+The required source order is:
+
+```text
+GAME LOCK A — Naruto Shippuden: Ultimate Ninja Storm 4
+    -> finish all selected Storm 4 assets/animations/groups first
+
+GAME LOCK B — Naruto to Boruto: Shinobi Striker
+    -> finish the selected Shinobi Striker snake program second
+
+NARUTO EXTERNAL REFERENCE BLOCK
+    -> finish Hiruzen/staff reference material before leaving Naruto-family work
+
+GAME LOCK C — Dragon Ball: Sparking! ZERO
+    -> finish all selected Sparking ZERO assets/animations/groups last
+
+POST-HARVEST CONSOLIDATION
+    -> only after all source games are complete
+```
+
+Gemini may research a blocked tool issue in parallel, but **may not begin a different game's character harvest simply to stay busy**.
+
+A source game is not complete until all selected material for that game has passed this checklist:
+
+- Original source character/creature rigs imported.
+- Required original weapons/props imported.
+- Selected animations converted/imported successfully.
+- Every selected animation plays correctly on its ORIGINAL rig in UE5.8.
+- Character/creature animation groups are created.
+- Friendly move-name labels are assigned without destroying original source IDs.
+- Hit reactions/knockbacks for opened characters are indexed.
+- Ground/flight metadata is complete where applicable.
+- Source provenance is recorded.
+- Missing items are explicitly marked `UNKNOWN` or `MISSING`, not silently skipped.
+
+Only after that source-game block is complete should Gemini advance to the next source game.
+
+---
+
+## 2.3 Optimized Native Playback Project — All Harvested Animations Must Be Playable Before Retargeting
+
+`AnimationHarvestGym` must be designed first as a **fast native-animation playback/browser project**.
+
+The goal is not to place every character and animation into one enormous level. The goal is to make **every harvested animation quickly selectable and playable on its original character before any retargeting begins**.
+
+Create a lightweight playback architecture:
+
+```text
+L_PlaybackHub
+  -> neutral floor
+  -> simple lighting
+  -> fixed gameplay-style camera
+  -> optional side diagnostic camera
+  -> spawn only the selected source character/creature
+  -> load only the selected animation/group
+  -> unload previous character/group when switching
+```
+
+Optimization rules:
+
+- Use soft references / on-demand loading where practical.
+- Do not keep every source character resident in memory.
+- Do not load full VFX trees, cinematic maps, environments, or unnecessary textures just to review body motion.
+- Use minimal readable materials for source validation.
+- Keep one neutral validation stage rather than duplicating heavy maps.
+- Large creatures/snakes may use dedicated lightweight stages only when scale/rig requirements demand it.
+- Prefer direct Unreal animation playback over creating a video for every clip.
+- The Visual Library / Playback Hub must provide Play, Pause, Loop, Next, Previous, speed control, and a clear source/move label.
+- A harvested animation is not handoff-ready until it can be selected and played natively inside this project.
+
+### Individual grouping and move-name labeling
+
+Every character/creature must have an individual group. Within that group, animations are organized by behavior/move family.
+
+Example:
+
+```text
+Storm4/
+  Mifune/
+    DRAW_SHEATH/
+    GROUNDED_SWORD/
+    IAIDO_DASH/
+    SPECIALTY/
+    LOCOMOTION/
+    RECOVERY/
+    HIT_REACTIONS/
+
+Storm4/
+  SasukeTheLast/
+    DRAW_SHEATH/
+    SWORD_ATTACKS/
+    DASH_ATTACKS/
+    LOCOMOTION/
+    HIT_REACTIONS/
+```
+
+Do not rename away the original source asset identifier. Instead, maintain a **friendly move label** beside it:
+
+```text
+MOVE LABEL: Tapion — Overhead Sword Raise
+SOURCE ID: original verified source identifier
+GROUP: TAPION/OVERHEAD_SWORD
+```
+
+The searchable catalog must include at minimum:
+
+```text
+source_game
+source_character_or_creature
+source_form
+move_label
+move_family
+original_source_id
+source_path_or_container
+native_playback_status
+group_id
+gym_id
+```
+
+
 # 3. Gemini Scope — Allowed Work
 
 Gemini MAY:
@@ -110,6 +266,48 @@ Gemini MUST NOT:
 If retargeting, skeleton editing, production IK, or production cleanup becomes necessary, STOP at the handoff boundary and record exactly what the next AI needs to do.
 
 ---
+
+## 4.1 RETARGET AUTHORIZATION GATE — OWNER APPROVAL REQUIRED
+
+Retargeting is a completely separate phase and is **locked** until the owner explicitly approves the completed harvest/conversion/Gym work.
+
+### Retarget operator whitelist
+
+Only these operators are allowed to begin retargeting after approval:
+
+- **Claude**
+- **Codex**
+
+**Gemini is not allowed to retarget. No other AI/operator is allowed to start the retarget phase.**
+
+### Conditions that must be complete before the owner can approve retargeting
+
+1. The separate `AnimationHarvestGym` UE5.8 project exists and is stable.
+2. The selected source-game harvest blocks are complete in the required game-lock order.
+3. Selected source conversions/imports have passed native validation.
+4. All selected harvested animations are playable in the optimized native Playback Hub on their original rigs.
+5. Animations are uploaded/imported into their **individual character/creature groups**.
+6. Each animation has a human-readable label associated with the **actual move name/behavior** while preserving its original source identifier.
+7. Required hit reactions/knockbacks are grouped and labeled.
+8. Sparking ZERO clips have ground/flight and foot-contact metadata where required.
+9. Broly transformation source evidence is complete.
+10. Snake, giant-stomp, Tapion/Janemba overhead, and Krillin Destructo Disk priority sets are complete or explicitly marked missing/unknown.
+
+### Mandatory stop point
+
+When all conditions above are complete, Gemini must report:
+
+```text
+HARVEST / CONVERSION / GYM CONSTRUCTION: COMPLETE
+NATIVE PLAYBACK GROUPING + MOVE LABELS: COMPLETE
+RETARGET PHASE: LOCKED — WAITING FOR OWNER APPROVAL
+AUTHORIZED RETARGET OPERATORS AFTER APPROVAL: CLAUDE OR CODEX ONLY
+```
+
+Gemini must then **stop**. It may not automatically hand work to Claude/Codex and may not begin retargeting itself.
+
+Retargeting begins only after the owner explicitly approves the harvest/conversion/Gym result.
+
 
 # 5. Architecture
 
@@ -710,17 +908,27 @@ The desired outcome is a reusable **snake motion reference library** that can la
 
 # 20. Phase Queue — Revised Master Harvest Order
 
-## Phase 0 — Pipeline Lock / Rock Lee Reference
+## GAME LOCK A — STORM 4 — Complete This Entire Block First
 
-- Keep Rock Lee Chakra Dash as an accepted traversal reference.
-- Validate folder conventions, metadata, source provenance, and native-playback workflow.
-- Do not spend time re-solving an already accepted Rock Lee reference unless a source artifact is missing.
+No Shinobi Striker or Sparking ZERO harvesting begins until the selected Storm 4 block is fully imported, grouped, labeled, and native-playback validated.
 
-## Phase 1 — Mifune — Storm 4
+## Phase 0 — Create `AnimationHarvestGym` + Existing Rock Lee Audit
 
-Mifune remains the **first actual character harvest**.
+- Create the **new separate UE5.8 project** before continuing the harvest.
+- Build the optimized `L_PlaybackHub` native playback stage and catalog framework.
+- Inventory the Rock Lee material the owner already has.
+- Keep accepted Rock Lee Chakra Dash material; verify what is already usable.
+- Fill only missing priority Rock Lee behaviors.
+- Validate folder conventions, metadata, source provenance, grouping, friendly move labels, and native-playback workflow.
+- No retargeting.
 
-One-touch source harvest categories:
+## Phase 1 — Mifune — Storm 4 — EXISTING SOURCE AUDIT + COMPLETION
+
+The owner **already has Mifune**. Do not blindly re-extract him.
+
+First inventory and validate the existing Mifune set, then harvest only missing material.
+
+One-touch source categories:
 
 - 1A — Weapon + draw/sheath
 - 1B — Core grounded sword attacks
@@ -731,9 +939,18 @@ One-touch source harvest categories:
 - 1G — Final visual-library review / metadata
 - PLUS all useful Mifune hit reactions and knockbacks encountered during the same source pass
 
-Import on Mifune's original rig only. No retargeting.
+Requirements:
 
-## Phase 2 — Sasuke — Storm 4
+- Import/play Mifune on his original rig only.
+- Put animations into Mifune's individual labeled groups.
+- Associate friendly move names with every selected animation while preserving source IDs.
+- No retargeting.
+
+## Phase 2 — Sasuke The Last — Storm 4 — EXISTING SOURCE AUDIT + COMPLETION
+
+The owner **already has Sasuke The Last** material. This is the priority Sasuke source/form.
+
+First inventory and validate the existing set, then harvest only missing material:
 
 - Sword reach/draw
 - Ready stance
@@ -743,6 +960,8 @@ Import on Mifune's original rig only. No retargeting.
 - Sheath
 - Variant compare
 - Hit reactions / knockbacks
+
+Create explicit `SasukeTheLast` source groups and move-name labels. No retargeting.
 
 ## Phase 3 — Hidan — Storm 4
 
@@ -776,16 +995,35 @@ Import on Mifune's original rig only. No retargeting.
 ## Phase 6 — Orochimaru + Kabuto Snake Harvest — Storm 4
 
 - Full snake slither
+- Turn while slithering
 - Raise
-- Bite
-- Lunge
+- Bite- Lunge
 - Ram
+- Body whip
 - Whole-body transform
 - Giant snake attack
+- Emerge
 - Snake recovery
 - Import original snake rigs where separate
 
+### Storm 4 Completion Gate
+
+Before proceeding to Shinobi Striker, confirm:
+
+- All selected Storm 4 original rigs are imported.
+- All selected Storm 4 animations are playable natively.
+- Every character/creature has its individual groups.
+- Move-name labels are attached to every selected animation.
+- Hit reactions are indexed for opened characters.
+- Existing Mifune, Sasuke The Last, and Rock Lee sets have been audited and only missing material was added.
+
+---
+
+## GAME LOCK B — SHINOBI STRIKER — Complete This Block Second
+
 ## Phase 7 — Shinobi Striker Snake Harvest
+
+Prove the Shinobi Striker extraction/import route on one original rig first, then complete the selected snake set:
 
 - Ninja Snakes mobility
 - Great Snake summon
@@ -796,8 +1034,37 @@ Import on Mifune's original rig only. No retargeting.
 - Strike
 - Bite
 - Whole-snake special abilities
+- Great Snake attack/spin behavior
+- Useful Orochimaru/Mitsuki snake-strike references as secondary material
 
-## Phase 8 — Trunks — Sparking ZERO
+Import original full snake rigs where present. Group and label all selected moves. No retargeting.
+
+### Shinobi Striker Completion Gate
+
+Do not move to Sparking ZERO until the selected Shinobi Striker snake assets are imported, grouped, labeled, and playable on their native rigs.
+
+---
+
+## NARUTO EXTERNAL REFERENCE BLOCK — Finish Before Sparking ZERO
+
+## Phase 8 — Hiruzen — External Naruto Staff Reference
+
+Hiruzen remains a separate Naruto staff reference rather than being falsely labeled as Storm 4 material if the desired source comes from elsewhere.
+
+- Staff thrust
+- Staff sweep
+- Staff guard
+- Staff transitions
+
+Finish this Naruto-family reference block **before beginning Sparking ZERO** so the project does not return to Naruto harvesting later.
+
+---
+
+## GAME LOCK C — SPARKING ZERO — Complete This Entire Block Third
+
+Once Sparking ZERO begins, remain on Sparking ZERO until all selected DBZ material has been harvested, converted/imported, grouped, labeled, and native-playback validated.
+
+## Phase 9 — Trunks — Sparking ZERO
 
 - Dash entry
 - Overhead
@@ -808,7 +1075,7 @@ Import on Mifune's original rig only. No retargeting.
 - Hit reactions / knockbacks
 - Ground/flight classification
 
-## Phase 9 — Tapion — Sparking ZERO
+## Phase 10 — Tapion — Sparking ZERO
 
 - Ready
 - Draw
@@ -822,7 +1089,7 @@ Import on Mifune's original rig only. No retargeting.
 - Hit reactions / knockbacks
 - Ground/flight classification
 
-## Phase 10 — Super Janemba — Sparking ZERO
+## Phase 11 — Super Janemba — Sparking ZERO
 
 - Sword idle
 - Teleport entry
@@ -834,7 +1101,7 @@ Import on Mifune's original rig only. No retargeting.
 - Hit reactions / knockbacks
 - Ground/flight classification
 
-## Phase 11 — Dabura — Sparking ZERO
+## Phase 12 — Dabura — Sparking ZERO
 
 - Demon sword
 - Casting entry
@@ -842,7 +1109,7 @@ Import on Mifune's original rig only. No retargeting.
 - Melee-to-magic transitions
 - Hit reactions / knockbacks
 
-## Phase 12 — Yajirobe — Sparking ZERO
+## Phase 13 — Yajirobe — Sparking ZERO
 
 - Basic slash
 - Overhead
@@ -851,7 +1118,7 @@ Import on Mifune's original rig only. No retargeting.
 - Low-skill sword language
 - Hit reactions / knockbacks
 
-## Phase 13 — Krillin — Sparking ZERO
+## Phase 14 — Krillin — Sparking ZERO
 
 - Full Destructo Disk family
 - Disc setup/creation
@@ -863,7 +1130,7 @@ Import on Mifune's original rig only. No retargeting.
 - Hit reactions / knockbacks
 - Ground/flight classification
 
-## Phase 14 — Goku Family — Sparking ZERO
+## Phase 15 — Goku Family — Sparking ZERO
 
 Include only useful unique motion families rather than duplicating whole characters.
 
@@ -876,7 +1143,7 @@ Priority:
 - Goku Mini / Power Pole staff thrust/sweep/spin/overhead/transitions
 - Hit reactions / knockbacks
 
-## Phase 15 — Broly — Sparking ZERO
+## Phase 16 — Broly — Sparking ZERO
 
 ### Base / Agile
 - Dash
@@ -902,7 +1169,7 @@ Priority:
 
 No Manny work by Gemini.
 
-## Phase 16 — Master Roshi — Sparking ZERO
+## Phase 17 — Master Roshi — Sparking ZERO
 
 - Unarmed monk
 - Palms
@@ -910,7 +1177,7 @@ No Manny work by Gemini.
 - Power-up/casting poses
 - Hit reactions / knockbacks
 
-## Phase 17 — Babidi — Sparking ZERO
+## Phase 18 — Babidi — Sparking ZERO
 
 - Point
 - Raise
@@ -919,7 +1186,7 @@ No Manny work by Gemini.
 - Upper-body mage gesture vocabulary
 - Hit reactions if useful
 
-## Phase 18 — Captain Ginyu — Sparking ZERO
+## Phase 19 — Captain Ginyu — Sparking ZERO
 
 - Body Change preparation
 - Targeting
@@ -928,7 +1195,7 @@ No Manny work by Gemini.
 - Aftermath
 - Hit reactions / knockbacks
 
-## Phase 19 — Bergamo — Sparking ZERO
+## Phase 20 — Bergamo — Sparking ZERO
 
 - Growth start
 - Enlargement
@@ -936,7 +1203,7 @@ No Manny work by Gemini.
 - Scale/form evidence
 - Hit reactions / knockbacks
 
-## Phase 20 — Hirudegarn — Sparking ZERO
+## Phase 21 — Hirudegarn — Sparking ZERO
 
 - Wing rig
 - Flap
@@ -948,7 +1215,7 @@ No Manny work by Gemini.
 - Stomp candidates
 - Giant hit reactions
 
-## Phase 21 — Great Ape Vegeta — Sparking ZERO
+## Phase 22 — Great Ape Vegeta — Sparking ZERO
 
 - Heavy walk
 - Turn
@@ -957,14 +1224,14 @@ No Manny work by Gemini.
 - Reactions
 - Knockbacks
 
-## Phase 22 — Great Ape Baby — Sparking ZERO
+## Phase 23 — Great Ape Baby — Sparking ZERO
 
 - Alternate giant locomotion
 - Aggression/posture variants
 - Stomp candidates
 - Reactions / knockbacks
 
-## Phase 23 — Anilaza — Sparking ZERO
+## Phase 24 — Anilaza — Sparking ZERO
 
 - Intelligent giant walk
 - Long reach
@@ -972,7 +1239,7 @@ No Manny work by Gemini.
 - Stomp candidates
 - Reactions / knockbacks
 
-## Phase 24 — Cell Max — Sparking ZERO
+## Phase 25 — Cell Max — Sparking ZERO
 
 - Charge
 - Berserk attacks
@@ -980,7 +1247,7 @@ No Manny work by Gemini.
 - Reactions / knockbacks
 - Chaotic giant motion language
 
-## Phase 25 — Giant Lord Slug — Sparking ZERO
+## Phase 26 — Giant Lord Slug — Sparking ZERO
 
 - Large humanoid walk
 - Large humanoid attacks
@@ -988,16 +1255,26 @@ No Manny work by Gemini.
 - Reactions / knockbacks
 - Bridge between normal humanoid and giant scale
 
-## Phase 26 — Hiruzen — External Naruto Staff Reference
+### Sparking ZERO Completion Gate
 
-Hiruzen remains a separate Naruto staff reference rather than being falsely labeled as part of the Storm 4 extraction set if his desired reference comes from elsewhere.
+Before any cross-game consolidation or retarget request:
 
-- Staff thrust
-- Staff sweep
-- Staff guard
-- Staff transitions
+- Every selected DBZ animation is playable natively on the original rig.
+- Individual character groups are complete.
+- Friendly move labels are complete.
+- Ground/flight classification is complete.
+- Foot-contact/floor-offset metadata is complete for groundable moves.
+- Broly transformation source evidence is complete.
+- Krillin Destructo Disk family is complete.
+- Tapion/Janemba overhead sets are complete.
+- Giant stomp candidates and reactions are indexed.
+
+---
+
+## POST-HARVEST CONSOLIDATION — Only After All Source Games Are Complete
 
 ## Phase 27 — Cross-Game Hit Reaction / Knockback Consolidation
+
 Create a source-reference reaction library organized by:
 
 - Direction
@@ -1035,11 +1312,15 @@ Before downstream retarget work begins, audit all selected Sparking ZERO animati
 - Flight dependency
 - Downstream grounding recommendation
 
+### FINAL HARVEST STOP GATE
+
+After Phase 29, Gemini must not begin retargeting. Confirm all harvested animations are grouped, labeled, and playable natively, then wait for explicit owner approval. Only Claude or Codex may begin retargeting after that approval.
+
 ---
 
 # 21. Mifune One-Touch Harvest Rule
 
-When Mifune source data is opened, harvest/index all relevant 1A-1G source clips and reactions in one source pass so the archive does not have to be repeatedly reopened.
+The owner already has Mifune source material. First audit the existing Mifune material inside the new Gym. If any 1A-1G categories or reactions are missing, then reopen the source and harvest/index all missing relevant clips in one completion pass so the archive does not have to be repeatedly reopened.
 
 However:
 
@@ -1310,7 +1591,11 @@ RETARGETING: NOT GEMINI SCOPE
 
 Gemini's animation-harvest job is complete when:
 
-- `AnimationHarvestGym` exists as a separate UE5.8 project.
+- `AnimationHarvestGym` exists as a separate UE5.8 project with an optimized native Playback Hub.
+- The source-game lock order was respected: Storm 4 -> Shinobi Striker -> Naruto external reference -> Sparking ZERO -> post-harvest consolidation.
+- Existing Mifune, Sasuke The Last, and Rock Lee material was audited before any duplicate extraction.
+- Every selected harvested animation is playable natively before retargeting.
+- Every selected animation is inside its individual character/creature group and has a friendly move-name label associated with the original source ID.
 - Selected original characters and original skeletons import cleanly.
 - Selected animations play natively in UE5.8 on the original rigs.
 - Source identifiers/provenance are preserved.
@@ -1326,24 +1611,33 @@ Gemini's animation-harvest job is complete when:
 - Sparking ZERO clips have grounded/flight metadata and foot-contact notes.
 - The Visual Library can find motions by behavior without requiring the user to remember the source character.
 - A separate AI can begin retargeting without reopening source archives to rediscover basic information.
+- Gemini has stopped at the retarget authorization gate and is waiting for explicit owner approval.
+- Retargeting has not begun unless the owner explicitly approved it and the assigned operator is Claude or Codex.
 
 ---
 
 # 33. Final Non-Negotiables
 
-1. **Mifune is the first actual character harvest.**
-2. **Gemini imports ORIGINAL characters + ORIGINAL animations.**
-3. **Gemini does NOT retarget.**
-4. **Another AI handles retargeting, Manny, production IK, and Motion Matching implementation.**
-5. **DBZ/Sparking ZERO floating animations must be identified and prepared for later ground conversion.**
-6. **Broly transformation must eventually make the target character physically larger; Gemini supplies the source evidence and timing.**
-7. **Krillin Destructo Disk animation family is mandatory.**
-8. **Tapion's high/overhead sword attacks are mandatory.**
-9. **Janemba's high/demonic overhead sword attacks are mandatory.**
-10. **Giant stomp attacks are mandatory research.**
-11. **Hit reactions + knockbacks from both source games are mandatory and must become a complete downstream Motion Matching kit.**
-12. **Whole-snake slither/raise/lunge/bite animation is mandatory from Storm 4 and Shinobi Striker.**
-13. **Native playback is always the truth test before conversion or downstream work.**
-14. **No giant source dump in one Gym.**
-15. **No source-game assets committed to GitHub.**
-16. **Unknown is an acceptable result. Guessing is not.**
+1. **Create the new separate `AnimationHarvestGym` UE5.8 project before continuing the harvest.**
+2. **The owner already has Mifune, Sasuke The Last, and some Rock Lee material. Audit/reuse those assets first; do not automatically re-harvest duplicates.**
+3. **Finish one source game before starting the next: Storm 4 -> Shinobi Striker -> Naruto external reference -> Sparking ZERO. No bouncing back and forth.**
+4. **Mifune remains the first character group to complete, but it is an existing-source audit + completion pass.**
+5. **Sasuke priority source is Sasuke The Last.**
+6. **Gemini imports ORIGINAL characters + ORIGINAL skeletons + ORIGINAL animations.**
+7. **Every selected harvested animation must be playable natively in the optimized Gym before retargeting.**
+8. **Every selected animation must live in its individual character/creature group and have a friendly label associated with its move name while preserving the original source ID.**
+9. **Gemini does NOT retarget.**
+10. **Only Claude or Codex may start the retarget phase, and only after explicit owner approval of the completed harvest, conversion, Gym construction, native playback, grouping, and labeling.**
+11. **Gemini must stop at the retarget authorization gate and wait for owner approval.**
+12. **DBZ/Sparking ZERO floating animations must be identified and prepared for later ground conversion.**
+13. **Broly transformation must eventually make the target character physically larger; Gemini supplies the source evidence and timing.**
+14. **Krillin Destructo Disk animation family is mandatory.**
+15. **Tapion's high/overhead sword attacks are mandatory.**
+16. **Janemba's high/demonic overhead sword attacks are mandatory.**
+17. **Giant stomp attacks are mandatory research.**
+18. **Hit reactions + knockbacks from both source game families are mandatory and must become a complete downstream Motion Matching kit.**
+19. **Whole-snake slither/raise/lunge/bite animation is mandatory from Storm 4 and Shinobi Striker.**
+20. **Native playback is always the truth test before conversion or downstream work.**
+21. **No giant source dump in one Gym; playback must be optimized with on-demand loading.**
+22. **No source-game assets committed to GitHub.**
+23. **Unknown is an acceptable result. Guessing is not.**
