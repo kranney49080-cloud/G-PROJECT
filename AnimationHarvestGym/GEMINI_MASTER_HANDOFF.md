@@ -2,7 +2,7 @@
 ## UE5.8 Native-Source Animation Research Project
 ### Naruto Shippuden: Ultimate Ninja Storm 4 + Naruto to Boruto: Shinobi Striker + Dragon Ball: Sparking! ZERO
 
-**Revision:** 2026-10-06 — Game-Lock + Retarget Approval Gate update  
+**Revision:** 2026-10-06 — Motion Vocabulary + Selective Audio + Fast Enlarged Broly update  
 **Project name:** `AnimationHarvestGym`  
 **Engine:** Unreal Engine 5.8  
 **Primary operator for this handoff:** Gemini  
@@ -69,7 +69,7 @@ Do not import the full game archives into Unreal. Index first, then import only 
 The owner already has source material for:
 
 - **Mifune** — already harvested to some degree and should be treated as existing source material.
-- **Sasuke The Last** — already harvested to some degree and should be treated as the Sasuke priority source/form.
+- **Sasuke The Last** — already harvested to some degree and should be treated as an important existing Sasuke source/form. It is **not** an exclusivity rule: other Sasuke variants may be harvested when they provide a specific unique behavior worth keeping.
 - **Rock Lee** — some useful material already exists.
 
 Gemini's first action in `AnimationHarvestGym` is to **inventory, import, verify, and organize what already exists before extracting duplicates**.
@@ -92,7 +92,7 @@ Rules:
 - Only extract/reconvert missing, corrupt, unverified, or genuinely new moves.
 - Preserve the original source identifiers and record where the existing material came from.
 - Mifune remains the first character group to complete, but Phase 1 is now an **audit + completion pass**, not an automatic full re-extraction.
-- Sasuke work must specifically include the **Sasuke The Last** material the owner already has.
+- Sasuke work must specifically include the **Sasuke The Last** material the owner already has, **plus any other Sasuke variant chosen for a documented reason** such as a unique draw, stance, slide, dash entry, Chidori-blade motion, aerial transition, landing, guard, recovery, or other behavior not already represented. Avoid duplicate variants that add no new motion vocabulary.
 - Rock Lee is a **partial existing set**: inventory it, validate it, and fill only the missing priority behaviors.
 
 ---
@@ -520,6 +520,231 @@ Standard motion-state vocabulary should include:
 
 ---
 
+## 10.1 Motion Vocabulary Expansion — Harvest More Than Named Attacks
+
+The library is a **motion-vocabulary research system**, not a character-moveset museum. Gemini must search for useful physical behavior even when the source move's gameplay purpose is different from how we may eventually use it.
+
+### A. Universal transition harvest
+
+Transitions are mandatory high-value material. Search opened characters for useful:
+
+- stance -> attack
+- attack -> stance
+- attack -> run
+- run/sprint -> attack
+- sprint -> stop
+- sprint -> slide/brake
+- 45 / 90 / 180 degree pivots
+- weapon idle -> ready
+- ready -> relaxed
+- draw -> attack
+- attack -> sheath
+- block -> counter
+- hit -> counter
+- landing -> attack
+- knockback -> recovery
+- get-up -> combat-ready
+
+Continuity states can be more valuable than another standalone attack because they make later Motion Matching and montage assembly look coherent.
+
+### B. Whiff / miss / overextension recovery
+
+Harvest useful missed-attack recoveries when present:
+
+- overextended miss
+- stumble recovery
+- sword-drag or heavy recovery
+- missed thrust recovery
+- missed overhead recovery
+- turn-back after a committed miss
+
+Do not assume a heavy attack should snap immediately back to idle.
+
+### C. Defense / guard / parry language
+
+Search for:
+
+- high guard
+- low guard
+- cross-body guard
+- sword guard
+- brace
+- perfect-block reaction
+- parry left/right
+- recoil from blocking a huge hit
+- guard break
+- staggered guard
+- magic barrier start
+- barrier hold
+- barrier collapse
+
+### D. Paired attacker / victim sequences
+
+Whenever a source move uses synchronized attacker-victim motion, preserve and link both halves where accessible:
+
+- grab / grabbed
+- throw / thrown
+- slam / slammed
+- bite / bitten
+- impale / victim response
+- giant pickup / held victim
+- launch / launched victim
+
+Record pair IDs and the frame/time of contact, hold, release, impact, and recovery.
+
+### E. Exact gameplay-event timing markers
+
+Useful clips should record event markers when present:
+
+```text
+FOOT_PLANT
+WEAPON_CONTACT
+PROJECTILE_CREATE
+PROJECTILE_RELEASE
+BARRIER_ON
+BARRIER_OFF
+TRANSFORM_START
+TRANSFORM_PEAK
+STOMP_CONTACT
+GRAB_CONTACT
+THROW_RELEASE
+BITE_CONTACT
+LAND_CONTACT
+HIT_CONTACT
+```
+
+These markers are references for later gameplay, Niagara, camera, and audio synchronization. Gemini records the source timing but does not author production gameplay.
+
+### F. Motion DNA metadata
+
+Every high-value motion should receive searchable behavioral descriptors beyond its source name:
+
+```text
+STANCE
+action_height
+WEAPON / PROP
+HANDEDNESS
+WEIGHT
+SPEED
+ANTICIPATION_LENGTH
+FORWARD_COMMITMENT
+ROOT_TRAVEL
+LEAD_FOOT
+PLANTED_FOOT
+TORSO_ROTATION
+POSE_ENERGY
+ENTRY_POSE
+EXIT_POSE
+UPPER_BODY_CANDIDATE
+MIRROR_CANDIDATE
+```
+
+Example searches should become possible:
+
+- "two-handed high sword poses with low forward movement"
+- "fast dash entries with grounded feet"
+- "heavy miss recoveries"
+- "barrier-like upper-body poses usable while locomoting"
+
+### G. Separate PHYSICAL MOTION from SOURCE PURPOSE and OUR POSSIBLE USE
+
+Never classify a motion solely from what we think its source move does.
+
+Each interesting clip should contain:
+
+```text
+PHYSICAL_MOTION: observable body/weapon behavior only
+SOURCE_GAME_PURPOSE: attack | buff | barrier | spell | transform | cinematic | unknown
+OUR_POSSIBLE_USE: one or more design possibilities
+```
+
+If source purpose is not directly verified, use `UNKNOWN`.
+
+A source buff may become our spell cast. A barrier pose may become a guard. An attack anticipation may become a weapon enchant. The **physical motion is the primary harvested value**.
+
+### H. Upper-body layering candidates
+
+Mark `UPPER_BODY_CANDIDATE = YES | NO | MAYBE` for hand signs, spells, barriers, buffs, pointing, projectile releases, weapon raises, guard changes, and similar motions that may later be layered over walking/running/jumping/falling.
+
+### I. Locomotion personality sets
+
+Where a source character has a valuable movement personality, index useful:
+
+- normal walk
+- combat walk
+- stalk
+- run
+- sprint
+- acceleration
+- deceleration
+- strafe
+- circle-strafe
+- pivot
+- stop
+- jump
+- landing
+
+The goal is later support for multiple movement styles, not one universal Manny locomotion personality.
+
+### J. Quality tier / Gold Motion layer
+
+Assign high-value clips one of:
+
+```text
+GOLD
+SILVER
+REFERENCE_ONLY
+REJECT
+```
+
+`GOLD` means the owner/downstream AI should inspect it first because the motion is unusually valuable. Do not delete lower-tier source records; this is a priority layer for fast browsing.
+
+### K. Harvest useful states from otherwise unusable cinematics
+
+A full cinematic/super move may be unsuitable, but its startup, anticipation, first step, power gathering, release pose, recoil, or recovery may be excellent. Preserve useful non-destructive state ranges even when the whole animation is `REFERENCE_ONLY`.
+
+---
+
+## 10.2 Selective Source-Audio Harvest and Timing — NOT FOR EVERY ANIMATION
+
+**Do not harvest sound for every animation.** Audio collection is selective and only applies when the source audio materially helps us understand timing, weight, impact, ability identity, transformation rhythm, creature motion, or synchronization.
+
+Each animation record gets:
+
+```text
+AUDIO_PRIORITY: YES | NO
+```
+
+If `AUDIO_PRIORITY = YES`, Gemini may locally harvest/associate the minimum useful original source audio cues and record exact sync timing. Source audio remains local research material and is **never committed to GitHub**.
+
+Priority audio candidates include:
+
+- Broly transformed locomotion: heavy footfalls, acceleration contacts, landings, stomps, large-body impacts, transformation beats/roar when useful to timing.
+- Giant stomp attacks and giant landings.
+- Krillin Destructo Disk creation/charge/release when audio reveals the action phases.
+- Tapion / Janemba high-sword sequences when audio helps determine whether the source purpose is attack, buff, barrier, spell, or charge.
+- Snake slither/raise/lunge/bite/impact cues when they materially clarify whole-body timing.
+- Selected heavy sword contacts, barrier activation/collapse, transformation peaks, grab/release/impact, or exceptional knockbacks.
+
+Do **not** spend harvest time extracting ordinary voice lines, ambience, UI audio, or a complete sound set for every animation.
+
+For each selected sound-critical move, record:
+
+```text
+source_audio_id
+sound_label
+sound_type = footstep | impact | charge | release | barrier | transform | roar | slither | bite | landing | other
+animation_frame_or_time
+sound_start_offset
+sound_peak_or_contact_time
+sound_end_time
+relationship = exact_sync | approximate_sync | loop | layered | unknown
+```
+
+The goal is to preserve **timing references** so later production audio can recreate the weight and rhythm without guessing.
+
+---
+
 # 11. Mandatory Hit-Reaction Harvest — BOTH GAMES
 
 This is now a **global rule for every character pass**.
@@ -538,6 +763,12 @@ When a source character is opened, Gemini must also search for useful:
 - Crumples
 - Knockbacks
 - Sliding knockbacks
+- Short / medium / long knockback distance classes
+- Launch-low / launch-high reactions
+- Spin knockbacks where present
+- Ground slides and ground rolls
+- Wall-impact style reactions where present
+- Ground-bounce reactions where present
 - Launch / juggle reactions
 - Airborne hit reactions
 - Ground impacts
@@ -548,6 +779,43 @@ When a source character is opened, Gemini must also search for useful:
 - Death/fall animations only when useful as reaction references
 
 The goal is a **complete cross-game source reaction kit for later Motion Matching**.
+
+Use normalized reaction behavior tags where possible:
+
+```text
+HIT_FLINCH
+HIT_STAGGER
+KNOCKBACK_SHORT
+KNOCKBACK_MEDIUM
+KNOCKBACK_LONG
+LAUNCH_LOW
+LAUNCH_HIGH
+SPIN_KNOCKBACK
+GROUND_SLIDE
+GROUND_ROLL
+WALL_IMPACT
+GROUND_BOUNCE
+KNOCKDOWN
+GETUP
+```
+
+### Giant-specific reaction requirement
+
+Do not assume normal humanoid reactions are appropriate for giants. Giant/large-creature sources should also be searched for:
+
+- head recoil
+- chest recoil
+- one-step-back reaction
+- two-step-back reaction
+- knee buckle
+- heavy stagger
+- stumble
+- enraged recovery
+- knockdown
+- get-up
+- roar-after-damage / recovery where useful
+
+Record whether a large character barely reacts to light hits so the downstream system can later support poise/weight differences.
 
 Gemini does NOT build the final production Motion Matching database. Gemini builds the verified native source library and metadata that the downstream retarget AI will use.
 
@@ -644,7 +912,38 @@ The next AI will build a reusable `GrowthAlpha` transformation test on Manny or 
 - Final scale persists after transformation
 - Later pass adds wider shoulders/chest/arms/torso rather than only uniform scaling
 
-Gemini's job is to deliver the native Broly evidence and timing so the downstream AI can reproduce the growth correctly.
+### Enlarged Broly must STILL FEEL FAST
+
+The transformed character must not become a slow lumbering giant simply because he is larger.
+
+Gemini must measure and preserve source evidence for:
+
+- transformed run/dash playback rate
+- acceleration timing
+- stride length
+- step cadence
+- planted-foot duration
+- root distance per second
+- rapid direction-change examples
+- heavy attack entry speed
+- recovery speed
+
+Downstream Claude/Codex should preserve **fast, violent acceleration and attack speed** while selling increased mass through other channels:
+
+- heavier/deeper footstep design on selected transformed locomotion
+- stronger landing/stomp impact
+- dust/debris or ground response on important contacts
+- subtle camera impulse on major foot plants/landings rather than constant shaking
+- stronger torso/shoulder/arm secondary lag and follow-through
+- larger stride and momentum rather than globally slowing the animation
+- heavier stops/braking and recovery where appropriate
+- optional stride/root-distance correction after retarget so the larger legs do not foot-slide
+
+**Do not globally time-stretch transformed Broly slower.** Weight should come primarily from contact, momentum, secondary motion, sound, ground response, and recovery—not from making him sluggish.
+
+Selected transformed footfalls/landings/stomps are `AUDIO_PRIORITY = YES`; ordinary unrelated Broly clips do not automatically require audio harvest.
+
+Gemini's job is to deliver the native Broly evidence and timing so the downstream AI can reproduce the growth correctly while preserving the character's speed.
 
 ---
 
@@ -685,68 +984,67 @@ Also harvest Krillin's useful hit reactions during the same source pass.
 
 ---
 
-# 15. Tapion — Overhead Sword Priority
+# 15. Tapion — High / Overhead Sword Sequence Priority
 
-Tapion's sword set is mandatory.
+Tapion's sword set is mandatory, especially the sequences where the sword is raised above his head.
 
-High priority is specifically given to the moves where he raises the sword above his head.
+**Do not assume those sequences are attacks.** They may be attack anticipation, high guard, buff, barrier, spell/channel, charge, transformation/cinematic, or another ability. Native playback + associated source behavior/audio/VFX decides the source purpose.
 
-Harvest and categorize:
+Harvest and categorize with neutral physical labels first:
 
 ```text
 GYM_TAPION_READY
 GYM_TAPION_DRAW
 GYM_TAPION_SHEATH
 GYM_TAPION_GROUNDED_SLASH
-GYM_TAPION_HIGH_GUARD
-GYM_TAPION_OVERHEAD_RAISE
-GYM_TAPION_OVERHEAD_ANTICIPATION
-GYM_TAPION_OVERHEAD_STRIKE
+GYM_TAPION_HIGH_SWORD_POSEGYM_TAPION_OVERHEAD_RAISE
+GYM_TAPION_OVERHEAD_HOLD
+GYM_TAPION_OVERHEAD_ACTION
 GYM_TAPION_OVERHEAD_RECOVERY
 GYM_TAPION_RECOVERY
 ```
 
-Track:
+For each high-sword sequence record:
 
-- Pelvis
-- Feet
-- Shoulder line
-- Two-hand/one-hand relationship
-- Sword angle
-- Root displacement
-- Planted foot
-- Entry and exit pose
+```text
+PHYSICAL_MOTION
+SOURCE_GAME_PURPOSE = attack | buff | barrier | spell | charge | other | UNKNOWN
+OUR_POSSIBLE_USE
+```
+
+Track pelvis, feet, shoulder line, hand relationship, sword angle, root displacement, planted foot, entry/exit pose, event frames, and `UPPER_BODY_CANDIDATE`.
+
+If associated audio materially reveals the move's phase or purpose, mark it `AUDIO_PRIORITY = YES`; otherwise do not harvest audio for it.
 
 ---
 
-# 16. Super Janemba — Demonic Overhead Sword Priority
+# 16. Super Janemba — High / Overhead Sword Sequence Priority
 
-Janemba's overhead sword behavior is also a priority.
+Janemba's high/overhead sword behavior is also mandatory, but **do not pre-label it as an attack unless native evidence proves that**. A high sword pose may be a buff, barrier, spell/channel, charge, guard, or attack-related sequence.
 
-Harvest:
+Harvest with neutral physical labels:
 
 ```text
 GYM_JANEMBA_SWORD_IDLE
 GYM_JANEMBA_TELEPORT_ENTRY
 GYM_JANEMBA_TELEPORT_SLASH
-GYM_JANEMBA_HIGH_GUARD
+GYM_JANEMBA_HIGH_SWORD_POSE
 GYM_JANEMBA_OVERHEAD_RAISE
-GYM_JANEMBA_DEMONIC_OVERHEAD
+GYM_JANEMBA_OVERHEAD_HOLD
+GYM_JANEMBA_OVERHEAD_ACTION
 GYM_JANEMBA_OVERHEAD_RECOVERY
 GYM_JANEMBA_RECOVERY
 ```
 
-Build a comparison set:
+Build a synchronized physical-motion comparison set:
 
 ```text
-TAPION vs JANEMBA vs TRUNKS — OVERHEAD SWORD
+TAPION vs JANEMBA vs TRUNKS — HIGH / OVERHEAD SWORD BODY LANGUAGE
 ```
 
-Purpose:
+Do not force all three into the same source-purpose label. Compare stance, sword height, anticipation, commitment, root travel, feet, torso, timing, and possible reuse.
 
-- Tapion = controlled grounded/traditional reference
-- Janemba = supernatural/demonic reference
-- Trunks = high-power committed sword reference
+If associated audio materially reveals the sequence timing/purpose, mark it `AUDIO_PRIORITY = YES`; otherwise no audio harvest is required.
 
 ---
 
@@ -786,6 +1084,8 @@ For each stomp, record the exact foot-contact frame so downstream systems can at
 - Camera impulse
 - Sound
 
+Giant stomp/landing clips are strong `AUDIO_PRIORITY` candidates because foot-contact timing and low-frequency impact help define weight. This is selective audio harvesting, not a requirement to extract sound for every giant animation.
+
 Do not confuse ordinary heavy walking with an actual attack stomp; tag them separately.
 
 ---
@@ -799,17 +1099,26 @@ We want **whole-snake motion**, not only a human arm with a snake effect.
 Primary target qualities:
 
 - Full snake body slither
+- Slow slither
+- Fast slither
+- Acceleration / deceleration
+- S-turn / sharp turn
 - Whole-body locomotion
-- Coiling
+- Coiling / coil idle / tighten / uncoil
 - Raise-up / upright threat posture
+- Threat sway
 - Head tracking
 - Lunge
 - Bite
-- Pull-back after bite
+- Bite hold / clamp if present
+- Pull-back or recoil after bite / missed bite
+- Constriction if present
 - Ram
 - Body whip
 - Turn while slithering
 - Ground emerge / rise
+- Hit reaction
+- Death/fall only when useful as creature reference
 - Attack recovery
 
 ### Storm 4 priority source: Orochimaru
@@ -904,6 +1213,8 @@ GYM_SS_SNAKE_VARIANTS
 
 The desired outcome is a reusable **snake motion reference library** that can later feed an original creature rig for the game.
 
+For high-value snake abilities, selective audio may be harvested for slither rhythm, raise/emerge timing, bite contact, impact, hiss/roar, or ability synchronization. Do not harvest audio for every snake animation.
+
 ---
 
 # 20. Phase Queue — Revised Master Harvest Order
@@ -946,11 +1257,13 @@ Requirements:
 - Associate friendly move names with every selected animation while preserving source IDs.
 - No retargeting.
 
-## Phase 2 — Sasuke The Last — Storm 4 — EXISTING SOURCE AUDIT + COMPLETION
+## Phase 2 — Sasuke — Storm 4 — Existing Sasuke The Last Audit + Purposeful Variant Completion
 
-The owner **already has Sasuke The Last** material. This is the priority Sasuke source/form.
+The owner **already has Sasuke The Last** material. Audit and reuse it first, but it is **not the only allowed Sasuke source**.
 
-First inventory and validate the existing set, then harvest only missing material:
+Harvest other Sasuke variants only when they add a specific useful behavior not already represented—for example a unique draw/sheath, sword stance, slide, dash entry, Chidori-blade movement, aerial transition, landing, guard, recovery, or transition. Record the reason for every extra variant and avoid redundant duplicates.
+
+First inventory and validate the existing Sasuke The Last set, then harvest missing/unique material:
 
 - Sword reach/draw
 - Ready stance
@@ -961,7 +1274,7 @@ First inventory and validate the existing set, then harvest only missing materia
 - Variant compare
 - Hit reactions / knockbacks
 
-Create explicit `SasukeTheLast` source groups and move-name labels. No retargeting.
+Create explicit `SasukeTheLast` source groups plus clearly labeled variant groups when another Sasuke is intentionally added. Record `variant_reason`. No retargeting.
 
 ## Phase 3 — Hidan — Storm 4
 
@@ -997,7 +1310,8 @@ Create explicit `SasukeTheLast` source groups and move-name labels. No retargeti
 - Full snake slither
 - Turn while slithering
 - Raise
-- Bite- Lunge
+- Bite
+- Lunge
 - Ram
 - Body whip
 - Whole-body transform
@@ -1077,29 +1391,26 @@ Once Sparking ZERO begins, remain on Sparking ZERO until all selected DBZ materi
 
 ## Phase 10 — Tapion — Sparking ZERO
 
-- Ready
-- Draw
-- Sheath
-- Grounded slash
-- High guard
-- Overhead raise
-- Overhead anticipation
-- Overhead strike
-- Overhead recovery
+- Ready / draw / sheath / grounded sword material
+- High sword pose
+- Overhead raise / hold / action / recovery
+- Determine source purpose only after native evidence: attack, buff, barrier, spell/channel, charge, other, or UNKNOWN
+- Record possible reuse separately from source purpose
 - Hit reactions / knockbacks
 - Ground/flight classification
+- Selective audio timing only if it materially clarifies the high-sword sequence
 
 ## Phase 11 — Super Janemba — Sparking ZERO
 
 - Sword idle
-- Teleport entry
-- Teleport slash
-- High guard
-- Overhead raise
-- Demonic overhead
-- Recovery
+- Teleport entry / slash
+- High sword pose
+- Overhead raise / hold / action / recovery
+- Determine source purpose only after native evidence: attack, buff, barrier, spell/channel, charge, other, or UNKNOWN
+- Record possible reuse separately from source purpose
 - Hit reactions / knockbacks
 - Ground/flight classification
+- Selective audio timing only if it materially clarifies the high-sword sequence
 
 ## Phase 12 — Dabura — Sparking ZERO
 
@@ -1166,6 +1477,10 @@ Priority:
 - Heavy recovery
 - Giant/large-character stomp candidates
 - Hit reactions / knockbacks
+- **Fast enlarged locomotion/combat evidence:** acceleration, dash/run speed, stride length, cadence, fast heavy attack entries, direction changes, and stops
+- Mark selected transformed footfalls/landings/stomps/major impacts for selective source-audio timing
+
+**Design target:** enlarged Broly must still feel fast. Do not infer that larger means slower. Weight should later come from stronger contacts, momentum, secondary motion, ground response, selected heavy footsteps/impacts, and recovery—not global animation slowdown.
 
 No Manny work by Gemini.
 
@@ -1400,6 +1715,12 @@ Use a structured record similar to:
   "root_motion": "inplace|forward|other|unknown",
   "root_displacement_cm": 0,
   "hit_reaction": false,
+  "physical_motion": "observable movement description",
+  "source_game_purpose": "attack|buff|barrier|spell|charge|transform|cinematic|other|UNKNOWN",
+  "our_possible_use": [],
+  "upper_body_candidate": "yes|no|maybe",
+  "quality_tier": "GOLD|SILVER|REFERENCE_ONLY|REJECT",
+  "audio_priority": "YES|NO",
   "notes": ""
 }
 ```
@@ -1482,6 +1803,28 @@ DOWNSTREAM:
 - feet must remain grounded during growth
 - Gemini does not implement target growth
 ```
+
+---
+
+# 27.1 Selective Audio Timing Record
+
+Only create this record when `AUDIO_PRIORITY = YES`.
+
+```json
+{
+  "source_animation_id": "SOURCE_IDENTIFIER",
+  "source_audio_id": "SOURCE_AUDIO_IDENTIFIER_OR_UNKNOWN",
+  "sound_label": "Broly transformed right-foot plant",
+  "sound_type": "footstep|impact|charge|release|barrier|transform|roar|slither|bite|landing|other",
+  "animation_frame_or_time": "MEASURED",
+  "sound_start_offset": "MEASURED_OR_UNKNOWN",
+  "sound_peak_or_contact_time": "MEASURED_OR_UNKNOWN",
+  "sound_end_time": "MEASURED_OR_UNKNOWN",
+  "relationship": "exact_sync|approximate_sync|loop|layered|unknown"
+}
+```
+
+**No global audio-harvest requirement exists.** The default is `AUDIO_PRIORITY = NO` unless the sound materially contributes to the selected motion research.
 
 ---
 
@@ -1600,15 +1943,17 @@ Gemini's animation-harvest job is complete when:
 - Selected animations play natively in UE5.8 on the original rigs.
 - Source identifiers/provenance are preserved.
 - Mifune begins the actual character harvest.
-- Tapion overhead sword attacks are captured.
-- Janemba overhead sword attacks are captured.
+- Tapion high/overhead sword **sequences** are captured and their source purpose is classified only from evidence.
+- Janemba high/overhead sword **sequences** are captured and their source purpose is classified only from evidence.
 - Krillin Destructo Disk body-motion family is captured.
-- Broly base/transformation/full-power source evidence is captured, including growth/form-change evidence.
+- Broly base/transformation/full-power source evidence is captured, including growth/form-change evidence and fast-enlarged locomotion/combat measurements.
 - Giant stomp candidates are captured and categorized.
 - Storm 4 whole-snake motions are captured.
 - Shinobi Striker whole-snake motions are captured.
 - Hit reactions and knockbacks are harvested from both game families and organized for downstream Motion Matching.
 - Sparking ZERO clips have grounded/flight metadata and foot-contact notes.
+- Selective source-audio timing has been recorded for designated sound-critical motions only; ordinary animations do not require audio harvesting.
+- Motion DNA, physical-motion/source-purpose separation, transition/whiff/defense candidates, event timing, and Gold/Silver priority metadata are available for high-value clips.
 - The Visual Library can find motions by behavior without requiring the user to remember the source character.
 - A separate AI can begin retargeting without reopening source archives to rediscover basic information.
 - Gemini has stopped at the retarget authorization gate and is waiting for explicit owner approval.
@@ -1622,7 +1967,7 @@ Gemini's animation-harvest job is complete when:
 2. **The owner already has Mifune, Sasuke The Last, and some Rock Lee material. Audit/reuse those assets first; do not automatically re-harvest duplicates.**
 3. **Finish one source game before starting the next: Storm 4 -> Shinobi Striker -> Naruto external reference -> Sparking ZERO. No bouncing back and forth.**
 4. **Mifune remains the first character group to complete, but it is an existing-source audit + completion pass.**
-5. **Sasuke priority source is Sasuke The Last.**
+5. **Sasuke The Last is important existing material, not an exclusivity rule. Other Sasuke variants are allowed when they provide a documented unique behavior.**
 6. **Gemini imports ORIGINAL characters + ORIGINAL skeletons + ORIGINAL animations.**
 7. **Every selected harvested animation must be playable natively in the optimized Gym before retargeting.**
 8. **Every selected animation must live in its individual character/creature group and have a friendly label associated with its move name while preserving the original source ID.**
@@ -1632,8 +1977,8 @@ Gemini's animation-harvest job is complete when:
 12. **DBZ/Sparking ZERO floating animations must be identified and prepared for later ground conversion.**
 13. **Broly transformation must eventually make the target character physically larger; Gemini supplies the source evidence and timing.**
 14. **Krillin Destructo Disk animation family is mandatory.**
-15. **Tapion's high/overhead sword attacks are mandatory.**
-16. **Janemba's high/demonic overhead sword attacks are mandatory.**
+15. **Tapion's high/overhead sword sequences are mandatory; do not assume they are attacks until source evidence proves the purpose.**
+16. **Janemba's high/overhead sword sequences are mandatory; do not assume they are attacks until source evidence proves the purpose.**
 17. **Giant stomp attacks are mandatory research.**
 18. **Hit reactions + knockbacks from both source game families are mandatory and must become a complete downstream Motion Matching kit.**
 19. **Whole-snake slither/raise/lunge/bite animation is mandatory from Storm 4 and Shinobi Striker.**
@@ -1641,3 +1986,7 @@ Gemini's animation-harvest job is complete when:
 21. **No giant source dump in one Gym; playback must be optimized with on-demand loading.**
 22. **No source-game assets committed to GitHub.**
 23. **Unknown is an acceptable result. Guessing is not.**
+24. **Harvest motion vocabulary, not just named attacks: transitions, whiffs, defense, paired victim motion, event timing, upper-body candidates, locomotion personalities, and useful cinematic states matter.**
+25. **Separate observable PHYSICAL MOTION from verified SOURCE PURPOSE and from OUR POSSIBLE USE.**
+26. **Enlarged Broly must still feel fast; do not make him heavy by globally slowing his animations.**
+27. **Sound harvest is SELECTIVE, not global. Do not extract sounds for every animation. Only designated `AUDIO_PRIORITY = YES` moves get source-audio timing research.**
