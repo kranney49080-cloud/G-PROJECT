@@ -1,0 +1,22 @@
+name: AI OS memory and skill checks
+
+on:
+  push:
+    branches:
+      - feature/maps-learning-agent-os-20261010
+  pull_request:
+
+jobs:
+  offline-check:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Verify memory map and registered skills
+        run: python scripts/ai_os.py check
+      - name: Run Python regressions
+        run: python -m unittest discover -s tests -v
