@@ -1,0 +1,8 @@
+# Public repository: operational notes, personal memories, session logs,
+# prompts, screenshots and potential secrets remain on the local machine.
+.ai-os-data/
+.pipeline/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+

@@ -1,0 +1,88 @@
+{
+  "version": 1,
+  "skills": [
+    {
+      "id": "animation-harvest",
+      "path": ".claude/skills/animation-harvest/SKILL.md",
+      "triggers": [
+        "animation harvest",
+        "harvest",
+        "retarget",
+        "montage",
+        "mifune",
+        "locomotion",
+        "audio capture",
+        "motion matching"
+      ],
+      "priority": 15
+    },
+    {
+      "id": "unreal-verify",
+      "path": ".claude/skills/unreal-verify/SKILL.md",
+      "triggers": [
+        "unreal",
+        "ue5",
+        "ue5.8",
+        "play in editor",
+        "pie",
+        "screenshot",
+        "shader",
+        "cel shade",
+        "rig",
+        "wing bone",
+        "visual verification"
+      ],
+      "priority": 10
+    },
+    {
+      "id": "skill-factory",
+      "path": ".claude/skills/skill-factory/SKILL.md",
+      "triggers": [
+        "create skill",
+        "build skill",
+        "improve skill",
+        "promote lesson",
+        "repeatable workflow",
+        "teach agent",
+        "skill regression"
+      ],
+      "priority": 10
+    },
+    {
+      "id": "learn",
+      "path": ".claude/skills/learn/SKILL.md",
+      "triggers": [
+        "mistake",
+        "failed",
+        "regression",
+        "learn",
+        "root cause",
+        "avoid repeating"
+      ],
+      "priority": 5
+    },
+    {
+      "id": "recall",
+      "path": ".claude/skills/recall/SKILL.md",
+      "triggers": [
+        "remember mistake",
+        "prior lesson",
+        "previous failure",
+        "what went wrong"
+      ],
+      "priority": 5
+    },
+    {
+      "id": "ship",
+      "path": ".claude/skills/ship/SKILL.md",
+      "triggers": [
+        "implement feature",
+        "code review",
+        "ship feature",
+        "four agents",
+        "developer team"
+      ],
+      "priority": 5
+    }
+  ]
+}
