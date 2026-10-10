@@ -1,0 +1,34 @@
+name: AI development team scaffold checks
+
+on:
+  push:
+    branches:
+      - feature/claude-four-agent-unreal-pipeline
+    paths:
+      - ".claude/**"
+      - "Tools/AIDevTeam/**"
+      - ".github/workflows/ai-dev-team-tests.yml"
+  pull_request:
+    paths:
+      - ".claude/**"
+      - "Tools/AIDevTeam/**"
+      - ".github/workflows/ai-dev-team-tests.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Unit tests (standard library only)
+        run: python -m unittest discover -s Tools/AIDevTeam/tests -v
+      - name: Validate owned two-hop memory map
+        run: python Tools/AIDevTeam/memory_check.py
+      - name: Read-only Pulse dry-run
+        run: python Tools/AIDevTeam/pulse.py --dry-run
