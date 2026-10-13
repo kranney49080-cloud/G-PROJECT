@@ -1,0 +1,6 @@
+{
+  "state_dir": "F:\\MrMak\\Workspace\\AI_OS\\state",
+  "queue_tasks_dir": "F:\\MrMak\\Workspace\\AI_OS\\queue\\tasks",
+  "status_file": "sim_hud_status.json",
+  "poll_seconds": 3
+}

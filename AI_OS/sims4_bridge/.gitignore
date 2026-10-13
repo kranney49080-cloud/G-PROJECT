@@ -1,0 +1,6 @@
+# Isolated Python 3.7 toolchain, build output and local logs stay out of git
+tools/
+build/
+dist/
+*.log
+*.log.old
