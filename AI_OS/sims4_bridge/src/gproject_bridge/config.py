@@ -12,6 +12,12 @@ DEFAULTS = {
     "status_file": "sim_hud_status.json",
     # Real-time poll interval in seconds (stage b). Real time, so pausing the game does not freeze it.
     "poll_seconds": 3,
+    # Native popup on every HUD status change (stage d).
+    "popups_enabled": True,
+    # Task submission (stage c). Empty = use the Sim/role from the HUD file.
+    "default_sim_id": "",
+    "default_role": "",
+    "preferred_tier": "auto",
 }
 
 

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<I c="AskBrainInteraction" i="interaction" m="gproject_bridge.ask_interaction" n="GProject_AskBrain" s="1434294580021687755">
+  <V n="_saveable" t="disabled" />
+  <T n="attention_cost">0</T>
+  <V n="basic_content" t="one_shot" />
+  <V n="content_score" t="disabled" />
+  <U n="dialog">
+    <V n="text" t="single"><T n="single">0x3741FC60</T></V>
+    <U n="text_inputs">
+      <U n="prompt">
+        <V n="default_text" t="enabled"><T n="enabled">0x93663902</T></V>
+      </U>
+    </U>
+    <V n="title" t="enabled"><T n="enabled">0x5BE1D535</T></V>
+  </U>
+  <T n="display_name">0x08720E8C</T>
+  <L n="interaction_category_tags">
+    <E>Interaction_Super</E>
+    <E>Interaction_All</E>
+  </L>
+  <E n="scoring_priority">NORMAL</E>
+  <T n="time_overhead">0</T>
+</I>

@@ -1,0 +1,56 @@
+{
+  "_comment": "Tier-to-provider map for the Agentic 3D brain. See AI_OS/MASTER_BLUEPRINT.md sections 2 and 3. API keys are NEVER stored here - only the NAME of the environment variable holding them.",
+
+  "default_tier": "tier2_fast",
+
+  "tiers": {
+    "tier1_local": {
+      "provider": "openai_compat",
+      "model": "phi-4-mini",
+      "base_url": "http://127.0.0.1:11434/v1",
+      "api_key_env": null,
+      "timeout_s": 120,
+      "default_max_tokens": 512,
+      "temperature": 0.2,
+      "pricing": { "input_per_m": 0.0, "output_per_m": 0.0 },
+      "notes": "Local llama.cpp / Ollama, CPU only. Never GPU-offloaded - the RTX 3060 is reserved for UE5. Run at low priority pinned to <=2 cores."
+    },
+
+    "tier2_fast": {
+      "provider": "openai_compat",
+      "model": "openai/gpt-oss-20b",
+      "base_url": "https://api.groq.com/openai/v1",
+      "api_key_env": "GROQ_API_KEY",
+      "timeout_s": 30,
+      "default_max_tokens": 2048,
+      "temperature": 0.3,
+      "reasoning_effort": "low",
+      "pricing": { "input_per_m": 0.0, "output_per_m": 0.0 },
+      "notes": "DEFAULT INTERACTIVE TIER. gpt-oss is a reasoning model: it spends output tokens thinking before it writes content, so a tight max_tokens yields an empty answer. 2048 plus reasoning_effort=low leaves room. Sub-second. Free-tier limits: 30 req/min, 1000 req/day, 8K tok/min, 200K tok/day. Swap model to openai/gpt-oss-120b or qwen/qwen3.8-27b for more capability at the same speed."
+    },
+
+    "tier3_heavy": {
+      "provider": "openai_compat",
+      "model": "anthropic/claude-sonnet-4.5",
+      "base_url": "https://openrouter.ai/api/v1",
+      "api_key_env": "OPENROUTER_API_KEY",
+      "timeout_s": 180,
+      "default_max_tokens": 8192,
+      "pricing": { "input_per_m": 3.0, "output_per_m": 15.0 },
+      "notes": "Heavy reasoning: UE5 C++, refactors, physics. OpenRouter is used because it speaks the OpenAI wire format, so it needs no new adapter. Verify the model id and current pricing in the OpenRouter catalogue before relying on these figures. For the Claude Agent SDK path (structured responses, preferred per blueprint section 2) a dedicated adapter is still to be written."
+    },
+
+    "tier2_fast_alt": {
+      "provider": "openai_compat",
+      "model": "deepseek-chat",
+      "base_url": "https://api.deepseek.com/v1",
+      "api_key_env": "DEEPSEEK_API_KEY",
+      "timeout_s": 60,
+      "default_max_tokens": 1024,
+      "pricing": { "input_per_m": 0.27, "output_per_m": 1.1 },
+      "notes": "Fallback if Groq daily limits are hit. Verify current pricing before relying on these figures."
+    }
+  },
+
+  "fallback_order": ["tier2_fast", "tier2_fast_alt", "tier1_local"]
+}

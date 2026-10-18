@@ -76,6 +76,12 @@ def read_once():
     log("poll: status=%s role=%s anim=%s task=%s" % (
         data["status"], data["assigned_role"], cues.get("anim"),
         str(data["task_description"])[:60]))
+    if _cfg.get("popups_enabled", True):
+        try:
+            from gproject_bridge import notifier
+            notifier.on_status(data)
+        except Exception as exc:
+            log("poll: notifier error (%s: %s)" % (type(exc).__name__, exc))
     return True
 
 

@@ -1,0 +1,24 @@
+# runtime data, never committed
+state/
+logs/
+backups/
+queue/
+roster/metrics/
+# build output and tools (rebuilt / re-downloaded)
+dist/
+build/
+sims4_bridge/tools/
+sims4_survey/dist/
+sims4_survey/build/
+vendor/*/
+!vendor/VENDOR_LOG.md
+# backups and junk
+*.bak
+*.pyc
+__pycache__/
+*.save*
+# secrets: keys and tokens must never be committed
+*.key
+*.token
+.env
+secrets*.json

@@ -1,0 +1,936 @@
+{
+ "_comment": "Metric catalogue. source: measured = recorded by the brain, script = a validator, review = scored by a second Sim (costs tokens), user = your rating. status: live = produced today, planned = defined but not produced yet. Add a metric by adding a line.",
+ "version": 1,
+ "metrics": [
+  {
+   "id": "task_time_s",
+   "label": "Task time",
+   "group": "speed",
+   "source": "measured",
+   "unit": "s",
+   "better": "lower",
+   "applies_to": "all",
+   "status": "live"
+  },
+  {
+   "id": "llm_latency_s",
+   "label": "Model latency",
+   "group": "speed",
+   "source": "measured",
+   "unit": "s",
+   "better": "lower",
+   "applies_to": "all",
+   "status": "live"
+  },
+  {
+   "id": "overhead_s",
+   "label": "Brain overhead",
+   "group": "speed",
+   "source": "measured",
+   "unit": "s",
+   "better": "lower",
+   "applies_to": "all",
+   "status": "live"
+  },
+  {
+   "id": "queue_wait_s",
+   "label": "Queue wait",
+   "group": "speed",
+   "source": "measured",
+   "unit": "s",
+   "better": "lower",
+   "applies_to": "all",
+   "status": "live"
+  },
+  {
+   "id": "tokens_in",
+   "label": "Tokens in",
+   "group": "tokens",
+   "source": "measured",
+   "unit": "tokens",
+   "better": null,
+   "applies_to": "all",
+   "status": "live"
+  },
+  {
+   "id": "tokens_out",
+   "label": "Tokens out",
+   "group": "tokens",
+   "source": "measured",
+   "unit": "tokens",
+   "better": null,
+   "applies_to": "all",
+   "status": "live"
+  },
+  {
+   "id": "tokens_total",
+   "label": "Tokens total",
+   "group": "tokens",
+   "source": "measured",
+   "unit": "tokens",
+   "better": "lower",
+   "applies_to": "all",
+   "status": "live"
+  },
+  {
+   "id": "tokens_per_s",
+   "label": "Output speed",
+   "group": "speed",
+   "source": "measured",
+   "unit": "tok/s",
+   "better": "higher",
+   "applies_to": "all",
+   "status": "live"
+  },
+  {
+   "id": "cost_usd",
+   "label": "Cost",
+   "group": "cost",
+   "source": "measured",
+   "unit": "USD",
+   "better": "lower",
+   "applies_to": "all",
+   "status": "live"
+  },
+  {
+   "id": "prompt_chars",
+   "label": "Prompt length (chars)",
+   "group": "size",
+   "source": "measured",
+   "unit": "chars",
+   "better": null,
+   "applies_to": "all",
+   "status": "live"
+  },
+  {
+   "id": "prompt_words",
+   "label": "Prompt length (words)",
+   "group": "size",
+   "source": "measured",
+   "unit": "words",
+   "better": null,
+   "applies_to": "all",
+   "status": "live"
+  },
+  {
+   "id": "output_chars",
+   "label": "Output length (chars)",
+   "group": "size",
+   "source": "measured",
+   "unit": "chars",
+   "better": null,
+   "applies_to": "all",
+   "status": "live"
+  },
+  {
+   "id": "output_words",
+   "label": "Output length (words)",
+   "group": "size",
+   "source": "measured",
+   "unit": "words",
+   "better": null,
+   "applies_to": "all",
+   "status": "live"
+  },
+  {
+   "id": "output_lines",
+   "label": "Output lines",
+   "group": "size",
+   "source": "measured",
+   "unit": "lines",
+   "better": null,
+   "applies_to": "all",
+   "status": "live"
+  },
+  {
+   "id": "out_in_ratio",
+   "label": "Output/prompt ratio",
+   "group": "size",
+   "source": "measured",
+   "unit": "ratio",
+   "better": null,
+   "applies_to": "all",
+   "status": "live"
+  },
+  {
+   "id": "code_blocks",
+   "label": "Code blocks",
+   "group": "format",
+   "source": "measured",
+   "unit": "count",
+   "better": null,
+   "applies_to": "all",
+   "status": "live"
+  },
+  {
+   "id": "has_list",
+   "label": "Used a list",
+   "group": "format",
+   "source": "measured",
+   "unit": "bool",
+   "better": null,
+   "applies_to": "all",
+   "status": "live"
+  },
+  {
+   "id": "json_valid",
+   "label": "Output is valid JSON",
+   "group": "format",
+   "source": "measured",
+   "unit": "bool",
+   "better": null,
+   "applies_to": "all",
+   "status": "live"
+  },
+  {
+   "id": "empty_output",
+   "label": "Empty output",
+   "group": "quality",
+   "source": "measured",
+   "unit": "bool",
+   "better": "lower",
+   "applies_to": "all",
+   "status": "live"
+  },
+  {
+   "id": "ok",
+   "label": "Success",
+   "group": "outcome",
+   "source": "measured",
+   "unit": "bool",
+   "better": "higher",
+   "applies_to": "all",
+   "status": "live"
+  },
+  {
+   "id": "infra_failure",
+   "label": "Infrastructure failure",
+   "group": "outcome",
+   "source": "measured",
+   "unit": "bool",
+   "better": "lower",
+   "applies_to": "all",
+   "status": "live"
+  },
+  {
+   "id": "error_class",
+   "label": "Error class",
+   "group": "outcome",
+   "source": "measured",
+   "unit": "category",
+   "better": null,
+   "applies_to": "all",
+   "status": "live"
+  },
+  {
+   "id": "error_chars",
+   "label": "Error message length",
+   "group": "outcome",
+   "source": "measured",
+   "unit": "chars",
+   "better": null,
+   "applies_to": "all",
+   "status": "live"
+  },
+  {
+   "id": "difficulty",
+   "label": "Difficulty",
+   "group": "task",
+   "source": "measured",
+   "unit": "1-5",
+   "better": null,
+   "applies_to": "all",
+   "status": "live"
+  },
+  {
+   "id": "skills",
+   "label": "Skill tags",
+   "group": "task",
+   "source": "measured",
+   "unit": "tags",
+   "better": null,
+   "applies_to": "all",
+   "status": "live"
+  },
+  {
+   "id": "collaborators_n",
+   "label": "Collaborators",
+   "group": "collaboration",
+   "source": "measured",
+   "unit": "count",
+   "better": null,
+   "applies_to": "all",
+   "status": "live"
+  },
+  {
+   "id": "tier",
+   "label": "Tier used",
+   "group": "routing",
+   "source": "measured",
+   "unit": "category",
+   "better": null,
+   "applies_to": "all",
+   "status": "live"
+  },
+  {
+   "id": "model",
+   "label": "Model",
+   "group": "routing",
+   "source": "measured",
+   "unit": "category",
+   "better": null,
+   "applies_to": "all",
+   "status": "live"
+  },
+  {
+   "id": "hour",
+   "label": "Hour of day",
+   "group": "timing",
+   "source": "measured",
+   "unit": "0-23",
+   "better": null,
+   "applies_to": "all",
+   "status": "live"
+  },
+  {
+   "id": "weekday",
+   "label": "Weekday",
+   "group": "timing",
+   "source": "measured",
+   "unit": "0-6",
+   "better": null,
+   "applies_to": "all",
+   "status": "live"
+  },
+  {
+   "id": "success_rate",
+   "label": "Success rate",
+   "group": "derived",
+   "source": "measured",
+   "unit": "%",
+   "better": "higher",
+   "applies_to": "all",
+   "status": "live"
+  },
+  {
+   "id": "failure_rate",
+   "label": "Failure rate",
+   "group": "derived",
+   "source": "measured",
+   "unit": "%",
+   "better": "lower",
+   "applies_to": "all",
+   "status": "live"
+  },
+  {
+   "id": "avg_task_time",
+   "label": "Average task time",
+   "group": "derived",
+   "source": "measured",
+   "unit": "s",
+   "better": "lower",
+   "applies_to": "all",
+   "status": "live"
+  },
+  {
+   "id": "median_task_time",
+   "label": "Median task time",
+   "group": "derived",
+   "source": "measured",
+   "unit": "s",
+   "better": "lower",
+   "applies_to": "all",
+   "status": "live"
+  },
+  {
+   "id": "p95_task_time",
+   "label": "95th percentile task time",
+   "group": "derived",
+   "source": "measured",
+   "unit": "s",
+   "better": "lower",
+   "applies_to": "all",
+   "status": "live"
+  },
+  {
+   "id": "tokens_per_task",
+   "label": "Average tokens per task",
+   "group": "derived",
+   "source": "measured",
+   "unit": "tokens",
+   "better": "lower",
+   "applies_to": "all",
+   "status": "live"
+  },
+  {
+   "id": "tokens_per_day",
+   "label": "Tokens today vs daily cap",
+   "group": "derived",
+   "source": "measured",
+   "unit": "%",
+   "better": "lower",
+   "applies_to": "all",
+   "status": "live"
+  },
+  {
+   "id": "requests_per_day",
+   "label": "Requests today vs daily cap",
+   "group": "derived",
+   "source": "measured",
+   "unit": "%",
+   "better": "lower",
+   "applies_to": "all",
+   "status": "live"
+  },
+  {
+   "id": "peak_rpm",
+   "label": "Peak requests per minute",
+   "group": "derived",
+   "source": "measured",
+   "unit": "count",
+   "better": "lower",
+   "applies_to": "all",
+   "status": "live"
+  },
+  {
+   "id": "win_streak",
+   "label": "Current success streak",
+   "group": "derived",
+   "source": "measured",
+   "unit": "count",
+   "better": "higher",
+   "applies_to": "all",
+   "status": "live"
+  },
+  {
+   "id": "best_streak",
+   "label": "Best success streak",
+   "group": "derived",
+   "source": "measured",
+   "unit": "count",
+   "better": "higher",
+   "applies_to": "all",
+   "status": "live"
+  },
+  {
+   "id": "cost_per_success",
+   "label": "Cost per successful task",
+   "group": "derived",
+   "source": "measured",
+   "unit": "USD",
+   "better": "lower",
+   "applies_to": "all",
+   "status": "live"
+  },
+  {
+   "id": "avg_difficulty",
+   "label": "Average difficulty",
+   "group": "derived",
+   "source": "measured",
+   "unit": "1-5",
+   "better": null,
+   "applies_to": "all",
+   "status": "live"
+  },
+  {
+   "id": "success_by_difficulty",
+   "label": "Success by difficulty",
+   "group": "derived",
+   "source": "measured",
+   "unit": "%",
+   "better": "higher",
+   "applies_to": "all",
+   "status": "live"
+  },
+  {
+   "id": "success_by_skill",
+   "label": "Success by skill",
+   "group": "derived",
+   "source": "measured",
+   "unit": "%",
+   "better": "higher",
+   "applies_to": "all",
+   "status": "live"
+  },
+  {
+   "id": "success_by_tier",
+   "label": "Success by tier",
+   "group": "derived",
+   "source": "measured",
+   "unit": "%",
+   "better": "higher",
+   "applies_to": "all",
+   "status": "live"
+  },
+  {
+   "id": "success_by_hour",
+   "label": "Success by hour of day",
+   "group": "derived",
+   "source": "measured",
+   "unit": "%",
+   "better": "higher",
+   "applies_to": "all",
+   "status": "live"
+  },
+  {
+   "id": "pair_success",
+   "label": "Pair success rate",
+   "group": "derived",
+   "source": "measured",
+   "unit": "%",
+   "better": "higher",
+   "applies_to": "all",
+   "status": "live"
+  },
+  {
+   "id": "compiles",
+   "label": "Code compiles",
+   "group": "script-checked",
+   "source": "script",
+   "unit": "bool",
+   "better": "higher",
+   "applies_to": "ue5_cpp,gameplay_programming,tools_scripting",
+   "status": "planned"
+  },
+  {
+   "id": "new_warnings",
+   "label": "New compiler warnings",
+   "group": "script-checked",
+   "source": "script",
+   "unit": "count",
+   "better": "lower",
+   "applies_to": "ue5_cpp,gameplay_programming",
+   "status": "planned"
+  },
+  {
+   "id": "tests_passed",
+   "label": "Tests passed",
+   "group": "script-checked",
+   "source": "script",
+   "unit": "%",
+   "better": "higher",
+   "applies_to": "qa_testing,gameplay_programming,ue5_cpp,tools_scripting",
+   "status": "planned"
+  },
+  {
+   "id": "schema_valid",
+   "label": "Output matches schema",
+   "group": "script-checked",
+   "source": "script",
+   "unit": "bool",
+   "better": "higher",
+   "applies_to": "all",
+   "status": "planned"
+  },
+  {
+   "id": "uses_real_api",
+   "label": "Only real API names used",
+   "group": "script-checked",
+   "source": "script",
+   "unit": "%",
+   "better": "higher",
+   "applies_to": "ue5_cpp,gameplay_programming,tools_scripting",
+   "status": "planned"
+  },
+  {
+   "id": "ue_build_ok",
+   "label": "UE build succeeds",
+   "group": "script-checked",
+   "source": "script",
+   "unit": "bool",
+   "better": "higher",
+   "applies_to": "ue5_cpp,blueprints,gameplay_programming",
+   "status": "planned"
+  },
+  {
+   "id": "bp_graph_valid",
+   "label": "Blueprint graph valid",
+   "group": "script-checked",
+   "source": "script",
+   "unit": "bool",
+   "better": "higher",
+   "applies_to": "blueprints",
+   "status": "planned"
+  },
+  {
+   "id": "bp_orphan_nodes",
+   "label": "Orphaned Blueprint nodes",
+   "group": "script-checked",
+   "source": "script",
+   "unit": "count",
+   "better": "lower",
+   "applies_to": "blueprints",
+   "status": "planned"
+  },
+  {
+   "id": "naming_conventions",
+   "label": "Follows naming conventions",
+   "group": "script-checked",
+   "source": "script",
+   "unit": "%",
+   "better": "higher",
+   "applies_to": "ue5_cpp,blueprints,tools_scripting,animation",
+   "status": "planned"
+  },
+  {
+   "id": "shader_compiles",
+   "label": "Shader compiles",
+   "group": "script-checked",
+   "source": "script",
+   "unit": "bool",
+   "better": "higher",
+   "applies_to": "tech_art",
+   "status": "planned"
+  },
+  {
+   "id": "shader_instruction_count",
+   "label": "Shader instruction count",
+   "group": "script-checked",
+   "source": "script",
+   "unit": "count",
+   "better": "lower",
+   "applies_to": "tech_art",
+   "status": "planned"
+  },
+  {
+   "id": "frame_time_delta_ms",
+   "label": "Frame time change",
+   "group": "script-checked",
+   "source": "script",
+   "unit": "ms",
+   "better": "lower",
+   "applies_to": "performance,tech_art",
+   "status": "planned"
+  },
+  {
+   "id": "memory_delta_mb",
+   "label": "Memory change",
+   "group": "script-checked",
+   "source": "script",
+   "unit": "MB",
+   "better": "lower",
+   "applies_to": "performance",
+   "status": "planned"
+  },
+  {
+   "id": "hot_path_allocs",
+   "label": "Hot-path allocations added",
+   "group": "script-checked",
+   "source": "script",
+   "unit": "count",
+   "better": "lower",
+   "applies_to": "ue5_cpp,performance",
+   "status": "planned"
+  },
+  {
+   "id": "retarget_ok",
+   "label": "Retarget valid (skeleton match)",
+   "group": "script-checked",
+   "source": "script",
+   "unit": "bool",
+   "better": "higher",
+   "applies_to": "animation",
+   "status": "planned"
+  },
+  {
+   "id": "foot_slide_cm",
+   "label": "Foot sliding",
+   "group": "script-checked",
+   "source": "script",
+   "unit": "cm",
+   "better": "lower",
+   "applies_to": "animation",
+   "status": "planned"
+  },
+  {
+   "id": "loop_seam_error",
+   "label": "Loop seam error",
+   "group": "script-checked",
+   "source": "script",
+   "unit": "score",
+   "better": "lower",
+   "applies_to": "animation",
+   "status": "planned"
+  },
+  {
+   "id": "balance_in_range",
+   "label": "Balance values in intended range",
+   "group": "script-checked",
+   "source": "script",
+   "unit": "bool",
+   "better": "higher",
+   "applies_to": "systems_design",
+   "status": "planned"
+  },
+  {
+   "id": "numbers_consistent",
+   "label": "Numbers internally consistent",
+   "group": "script-checked",
+   "source": "script",
+   "unit": "bool",
+   "better": "higher",
+   "applies_to": "systems_design,documentation",
+   "status": "planned"
+  },
+  {
+   "id": "files_in_place",
+   "label": "Files landed in the right place",
+   "group": "script-checked",
+   "source": "script",
+   "unit": "bool",
+   "better": "higher",
+   "applies_to": "tools_scripting,devops_build",
+   "status": "planned"
+  },
+  {
+   "id": "lint_clean",
+   "label": "Lint clean",
+   "group": "script-checked",
+   "source": "script",
+   "unit": "bool",
+   "better": "higher",
+   "applies_to": "tools_scripting,gameplay_programming",
+   "status": "planned"
+  },
+  {
+   "id": "repro_steps_work",
+   "label": "Bug repro steps work",
+   "group": "script-checked",
+   "source": "script",
+   "unit": "bool",
+   "better": "higher",
+   "applies_to": "qa_testing,debugging",
+   "status": "planned"
+  },
+  {
+   "id": "false_positive_bugs",
+   "label": "False-positive bug reports",
+   "group": "script-checked",
+   "source": "script",
+   "unit": "count",
+   "better": "lower",
+   "applies_to": "qa_testing",
+   "status": "planned"
+  },
+  {
+   "id": "link_check_ok",
+   "label": "Links and references resolve",
+   "group": "script-checked",
+   "source": "script",
+   "unit": "%",
+   "better": "higher",
+   "applies_to": "documentation",
+   "status": "planned"
+  },
+  {
+   "id": "git_clean",
+   "label": "Left the working tree clean",
+   "group": "script-checked",
+   "source": "script",
+   "unit": "bool",
+   "better": "higher",
+   "applies_to": "devops_build",
+   "status": "planned"
+  },
+  {
+   "id": "audio_loudness_lufs",
+   "label": "Loudness within target",
+   "group": "script-checked",
+   "source": "script",
+   "unit": "LUFS",
+   "better": "lower",
+   "applies_to": "audio",
+   "status": "planned"
+  },
+  {
+   "id": "correctness",
+   "label": "Correctness",
+   "group": "reviewed",
+   "source": "review",
+   "unit": "1-5",
+   "better": "higher",
+   "applies_to": "all",
+   "status": "planned"
+  },
+  {
+   "id": "completeness",
+   "label": "Completeness",
+   "group": "reviewed",
+   "source": "review",
+   "unit": "1-5",
+   "better": "higher",
+   "applies_to": "all",
+   "status": "planned"
+  },
+  {
+   "id": "follows_spec",
+   "label": "Followed the spec",
+   "group": "reviewed",
+   "source": "review",
+   "unit": "1-5",
+   "better": "higher",
+   "applies_to": "all",
+   "status": "planned"
+  },
+  {
+   "id": "clarity",
+   "label": "Clarity",
+   "group": "reviewed",
+   "source": "review",
+   "unit": "1-5",
+   "better": "higher",
+   "applies_to": "all",
+   "status": "planned"
+  },
+  {
+   "id": "concision",
+   "label": "Concision",
+   "group": "reviewed",
+   "source": "review",
+   "unit": "1-5",
+   "better": "higher",
+   "applies_to": "all",
+   "status": "planned"
+  },
+  {
+   "id": "scope_kept",
+   "label": "Kept within scope",
+   "group": "reviewed",
+   "source": "review",
+   "unit": "1-5",
+   "better": "higher",
+   "applies_to": "all",
+   "status": "planned"
+  },
+  {
+   "id": "hallucination_found",
+   "label": "Hallucination found",
+   "group": "reviewed",
+   "source": "review",
+   "unit": "bool",
+   "better": "lower",
+   "applies_to": "all",
+   "status": "planned"
+  },
+  {
+   "id": "ue_conventions",
+   "label": "Follows UE conventions",
+   "group": "reviewed",
+   "source": "review",
+   "unit": "1-5",
+   "better": "higher",
+   "applies_to": "ue5_cpp,blueprints,gameplay_programming",
+   "status": "planned"
+  },
+  {
+   "id": "replication_correct",
+   "label": "Replication correct",
+   "group": "reviewed",
+   "source": "review",
+   "unit": "1-5",
+   "better": "higher",
+   "applies_to": "ue5_cpp,gameplay_programming",
+   "status": "planned"
+  },
+  {
+   "id": "lore_consistent",
+   "label": "Consistent with existing lore",
+   "group": "reviewed",
+   "source": "review",
+   "unit": "1-5",
+   "better": "higher",
+   "applies_to": "narrative",
+   "status": "planned"
+  },
+  {
+   "id": "tone_match",
+   "label": "Tone match",
+   "group": "reviewed",
+   "source": "review",
+   "unit": "1-5",
+   "better": "higher",
+   "applies_to": "narrative,documentation",
+   "status": "planned"
+  },
+  {
+   "id": "level_flow",
+   "label": "Level flow and readability",
+   "group": "reviewed",
+   "source": "review",
+   "unit": "1-5",
+   "better": "higher",
+   "applies_to": "level_design",
+   "status": "planned"
+  },
+  {
+   "id": "handoff_quality",
+   "label": "Handoff quality",
+   "group": "reviewed",
+   "source": "review",
+   "unit": "1-5",
+   "better": "higher",
+   "applies_to": "all",
+   "status": "planned"
+  },
+  {
+   "id": "takes_feedback",
+   "label": "Took feedback well",
+   "group": "reviewed",
+   "source": "review",
+   "unit": "1-5",
+   "better": "higher",
+   "applies_to": "all",
+   "status": "planned"
+  },
+  {
+   "id": "user_stars",
+   "label": "Your star rating",
+   "group": "user-rated",
+   "source": "user",
+   "unit": "1-5",
+   "better": "higher",
+   "applies_to": "all",
+   "status": "planned"
+  },
+  {
+   "id": "user_thumb",
+   "label": "Thumbs up/down",
+   "group": "user-rated",
+   "source": "user",
+   "unit": "bool",
+   "better": "higher",
+   "applies_to": "all",
+   "status": "planned"
+  },
+  {
+   "id": "needed_rework",
+   "label": "Needed your rework",
+   "group": "user-rated",
+   "source": "user",
+   "unit": "bool",
+   "better": "lower",
+   "applies_to": "all",
+   "status": "planned"
+  },
+  {
+   "id": "rework_minutes",
+   "label": "Minutes of rework",
+   "group": "user-rated",
+   "source": "user",
+   "unit": "min",
+   "better": "lower",
+   "applies_to": "all",
+   "status": "planned"
+  },
+  {
+   "id": "would_delegate_again",
+   "label": "Would delegate again",
+   "group": "user-rated",
+   "source": "user",
+   "unit": "bool",
+   "better": "higher",
+   "applies_to": "all",
+   "status": "planned"
+  }
+ ]
+}

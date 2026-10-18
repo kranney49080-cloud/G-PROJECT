@@ -21,9 +21,24 @@ def install():
     def wrapper(self, *args, **kwargs):
         result = original(self, *args, **kwargs)
         try:
+            from gproject_bridge import brainlaunch
+            brainlaunch.ensure_running()
+        except Exception as exc:
+            log("hook: brain launch failed (%s: %s)" % (type(exc).__name__, exc))
+        try:
             poller.start()
         except Exception as exc:
             log("hook: poller.start failed (%s: %s)" % (type(exc).__name__, exc))
+        try:
+            from gproject_bridge import presence
+            presence.start()
+        except Exception as exc:
+            log("hook: presence.start failed (%s: %s)" % (type(exc).__name__, exc))
+        try:
+            from gproject_bridge import glow
+            glow.start()
+        except Exception as exc:
+            log("hook: glow.start failed (%s: %s)" % (type(exc).__name__, exc))
         return result
 
     wrapper._gp_wrapped = True

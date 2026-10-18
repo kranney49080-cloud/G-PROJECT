@@ -14,6 +14,10 @@ def _boot():
     log("state_dir=%s poll_seconds=%s" % (cfg.get("state_dir"), cfg.get("poll_seconds")))
     from gproject_bridge import hooks
     hooks.install()
+    from gproject_bridge import cmds  # noqa: F401  (registers gp.task / gp.status)
+    log("commands: gp.task, gp.status registered")
+    from gproject_bridge import inject
+    inject.install()
 
 
 try:

@@ -1,0 +1,716 @@
+{
+  "_comment": "Staff named after the real AI clients, agents, tools and skills (AGENTS.md, MCP_CAPABILITY_MATRIX.md, blueprint skill pools). v3 adds the 6 blueprint skill pools and zones from the blueprint image.",
+  "version": 4,
+  "staff": [
+    {
+      "sim_id": "0417",
+      "name": "Claude",
+      "kind": "ai",
+      "role": "architect",
+      "dept": "exec_mind",
+      "tier": "tier3_heavy",
+      "active": true,
+      "skills": {
+        "animation": 3,
+        "ue5_cpp": 3,
+        "debugging": 3,
+        "gameplay_programming": 2,
+        "tools_scripting": 2,
+        "performance": 2
+      },
+      "weak": {},
+      "note": "First choice for protected animation, rigs, bones, sockets, retargeting, root motion, notifies."
+    },
+    {
+      "sim_id": "0418",
+      "name": "Antigravity",
+      "kind": "ai",
+      "role": "assistant",
+      "dept": "exec_mind",
+      "tier": "tier2_fast",
+      "active": true,
+      "skills": {
+        "tools_scripting": 2,
+        "devops_build": 2,
+        "documentation": 2,
+        "narrative": 1,
+        "animation": -2,
+        "ue5_cpp": -1
+      },
+      "weak": {},
+      "blocked_skills": [
+        "animation"
+      ],
+      "note": "agy CLI. Owner's first choice for general MCP work. Must not touch protected animation work."
+    },
+    {
+      "sim_id": "0419",
+      "name": "Codex",
+      "kind": "ai",
+      "role": "coder",
+      "dept": "exec_mind",
+      "tier": "tier3_heavy",
+      "active": true,
+      "skills": {
+        "ue5_cpp": 2,
+        "gameplay_programming": 2,
+        "debugging": 2,
+        "tools_scripting": 1
+      },
+      "weak": {},
+      "no_auto": true,
+      "note": "Owner-controlled last resort. Never auto-dispatched."
+    },
+    {
+      "sim_id": "0420",
+      "name": "Planner",
+      "kind": "agent",
+      "role": "planner",
+      "dept": "exec_mind",
+      "tier": "tier2_fast",
+      "active": true,
+      "skills": {
+        "systems_design": 3,
+        "documentation": 2,
+        "narrative": 1,
+        "level_design": 1
+      },
+      "weak": {}
+    },
+    {
+      "sim_id": "0421",
+      "name": "Coder",
+      "kind": "agent",
+      "role": "coder",
+      "dept": "core",
+      "tier": "tier2_fast",
+      "active": true,
+      "skills": {
+        "gameplay_programming": 2,
+        "ue5_cpp": 1,
+        "blueprints": 1,
+        "tools_scripting": 1
+      },
+      "weak": {}
+    },
+    {
+      "sim_id": "0422",
+      "name": "Tester",
+      "kind": "agent",
+      "role": "tester",
+      "dept": "qa_lab",
+      "tier": "tier2_fast",
+      "active": true,
+      "skills": {
+        "qa_testing": 3,
+        "debugging": 2,
+        "devops_build": 1
+      },
+      "weak": {}
+    },
+    {
+      "sim_id": "0423",
+      "name": "Reviewer",
+      "kind": "agent",
+      "role": "reviewer",
+      "dept": "hitl",
+      "tier": "tier2_fast",
+      "active": true,
+      "skills": {
+        "qa_testing": 2,
+        "documentation": 1,
+        "debugging": 1,
+        "performance": 1
+      },
+      "weak": {}
+    },
+    {
+      "sim_id": "0424",
+      "name": "PinWright",
+      "kind": "tool",
+      "role": "tool",
+      "dept": "devops",
+      "tier": "tier0_det",
+      "active": true,
+      "skills": {
+        "ue5_cpp": 2,
+        "blueprints": 2,
+        "level_design": 1
+      },
+      "weak": {},
+      "no_auto": true,
+      "note": "Unreal safety layer. Production routing blocked until .uproject and connection agree."
+    },
+    {
+      "sim_id": "0425",
+      "name": "ClickUp",
+      "kind": "tool",
+      "role": "tool",
+      "dept": "lab",
+      "tier": "tier0_det",
+      "active": true,
+      "skills": {
+        "documentation": 2,
+        "systems_design": 1,
+        "devops_build": 1
+      },
+      "weak": {}
+    },
+    {
+      "sim_id": "0426",
+      "name": "GitHub",
+      "kind": "tool",
+      "role": "tool",
+      "dept": "devops",
+      "tier": "tier0_det",
+      "active": true,
+      "skills": {
+        "devops_build": 3,
+        "tools_scripting": 1
+      },
+      "weak": {}
+    },
+    {
+      "sim_id": "0427",
+      "name": "Google Drive",
+      "kind": "tool",
+      "role": "tool",
+      "dept": "vault",
+      "tier": "tier0_det",
+      "active": true,
+      "skills": {
+        "devops_build": 1,
+        "documentation": 2
+      },
+      "weak": {}
+    },
+    {
+      "sim_id": "0428",
+      "name": "ElevenLabs",
+      "kind": "tool",
+      "role": "tool",
+      "dept": "prod_sound",
+      "tier": "tier0_det",
+      "active": true,
+      "skills": {
+        "audio": 3,
+        "narrative": 1
+      },
+      "weak": {}
+    },
+    {
+      "sim_id": "0429",
+      "name": "Cascadeur",
+      "kind": "tool",
+      "role": "tool",
+      "dept": "prod_anim",
+      "tier": "tier0_det",
+      "active": true,
+      "skills": {
+        "animation": 3
+      },
+      "weak": {}
+    },
+    {
+      "sim_id": "0430",
+      "name": "Blender",
+      "kind": "tool",
+      "role": "tool",
+      "dept": "prod_anim",
+      "tier": "tier0_det",
+      "active": true,
+      "skills": {
+        "animation": 2,
+        "tech_art": 2,
+        "level_design": 1
+      },
+      "weak": {}
+    },
+    {
+      "sim_id": "0431",
+      "name": "Tripo",
+      "kind": "tool",
+      "role": "tool",
+      "dept": "prod_assets",
+      "tier": "tier0_det",
+      "active": true,
+      "skills": {
+        "tech_art": 2,
+        "level_design": 1
+      },
+      "weak": {}
+    },
+    {
+      "sim_id": "0432",
+      "name": "ComfyUI",
+      "kind": "tool",
+      "role": "tool",
+      "dept": "prod_assets",
+      "tier": "tier0_det",
+      "active": true,
+      "skills": {
+        "tech_art": 2
+      },
+      "weak": {}
+    },
+    {
+      "sim_id": "0433",
+      "name": "Meshy",
+      "kind": "tool",
+      "role": "tool",
+      "dept": "prod_assets",
+      "tier": "tier0_det",
+      "active": true,
+      "skills": {
+        "tech_art": 2,
+        "level_design": 1
+      },
+      "weak": {},
+      "no_auto": true,
+      "note": "BLOCKED: no MESHY_API_KEY."
+    },
+    {
+      "sim_id": "0434",
+      "name": "FFmpeg",
+      "kind": "tool",
+      "role": "tool",
+      "dept": "devops",
+      "tier": "tier0_det",
+      "active": true,
+      "skills": {
+        "tools_scripting": 2,
+        "devops_build": 1,
+        "audio": 1
+      },
+      "weak": {}
+    },
+    {
+      "sim_id": "0435",
+      "name": "game-animation-integration",
+      "kind": "skill",
+      "role": "skill",
+      "dept": "prod_anim",
+      "tier": "tier2_fast",
+      "active": true,
+      "skills": {
+        "animation": 3,
+        "blueprints": 1
+      },
+      "weak": {}
+    },
+    {
+      "sim_id": "0436",
+      "name": "game-audio-workflow",
+      "kind": "skill",
+      "role": "skill",
+      "dept": "prod_sound",
+      "tier": "tier2_fast",
+      "active": true,
+      "skills": {
+        "audio": 3
+      },
+      "weak": {}
+    },
+    {
+      "sim_id": "0437",
+      "name": "game-level-design",
+      "kind": "skill",
+      "role": "skill",
+      "dept": "prod_level",
+      "tier": "tier2_fast",
+      "active": true,
+      "skills": {
+        "level_design": 3
+      },
+      "weak": {}
+    },
+    {
+      "sim_id": "0438",
+      "name": "game-ui-workflow",
+      "kind": "skill",
+      "role": "skill",
+      "dept": "prod_assets",
+      "tier": "tier2_fast",
+      "active": true,
+      "skills": {
+        "blueprints": 2,
+        "tech_art": 1
+      },
+      "weak": {}
+    },
+    {
+      "sim_id": "0439",
+      "name": "game-vfx-workflow",
+      "kind": "skill",
+      "role": "skill",
+      "dept": "prod_assets",
+      "tier": "tier2_fast",
+      "active": true,
+      "skills": {
+        "tech_art": 3
+      },
+      "weak": {}
+    },
+    {
+      "sim_id": "0440",
+      "name": "gameplay-visual-review",
+      "kind": "skill",
+      "role": "skill",
+      "dept": "qa_lab",
+      "tier": "tier2_fast",
+      "active": true,
+      "skills": {
+        "qa_testing": 3,
+        "gameplay_programming": 1
+      },
+      "weak": {}
+    },
+    {
+      "sim_id": "0441",
+      "name": "materials-to-game",
+      "kind": "skill",
+      "role": "skill",
+      "dept": "prod_assets",
+      "tier": "tier2_fast",
+      "active": true,
+      "skills": {
+        "tech_art": 3
+      },
+      "weak": {}
+    },
+    {
+      "sim_id": "0442",
+      "name": "plan",
+      "kind": "skill",
+      "role": "skill",
+      "dept": "lab",
+      "tier": "tier2_fast",
+      "active": true,
+      "skills": {
+        "systems_design": 3,
+        "documentation": 2
+      },
+      "weak": {}
+    },
+    {
+      "sim_id": "0443",
+      "name": "3d-production-routing",
+      "kind": "skill",
+      "role": "skill",
+      "dept": "art_anim",
+      "tier": "tier2_fast",
+      "active": false,
+      "skills": {
+        "tech_art": 2,
+        "level_design": 1
+      },
+      "weak": {},
+      "note": "Benched. Set active to true to add to the office."
+    },
+    {
+      "sim_id": "0444",
+      "name": "blender-game-animation",
+      "kind": "skill",
+      "role": "skill",
+      "dept": "art_anim",
+      "tier": "tier2_fast",
+      "active": false,
+      "skills": {
+        "animation": 3,
+        "tech_art": 1
+      },
+      "weak": {},
+      "note": "Benched. Set active to true to add to the office."
+    },
+    {
+      "sim_id": "0445",
+      "name": "character-sheet-pipeline",
+      "kind": "skill",
+      "role": "skill",
+      "dept": "art_anim",
+      "tier": "tier2_fast",
+      "active": false,
+      "skills": {
+        "tech_art": 2
+      },
+      "weak": {},
+      "note": "Benched. Set active to true to add to the office."
+    },
+    {
+      "sim_id": "0446",
+      "name": "fal-ai-generation",
+      "kind": "skill",
+      "role": "skill",
+      "dept": "art_anim",
+      "tier": "tier2_fast",
+      "active": false,
+      "skills": {
+        "tech_art": 2
+      },
+      "weak": {},
+      "note": "Benched. Set active to true to add to the office."
+    },
+    {
+      "sim_id": "0447",
+      "name": "feature-handoff",
+      "kind": "skill",
+      "role": "skill",
+      "dept": "pipeline",
+      "tier": "tier2_fast",
+      "active": false,
+      "skills": {
+        "documentation": 2,
+        "devops_build": 1
+      },
+      "weak": {},
+      "note": "Benched. Set active to true to add to the office."
+    },
+    {
+      "sim_id": "0448",
+      "name": "higgsfield-workflow",
+      "kind": "skill",
+      "role": "skill",
+      "dept": "art_anim",
+      "tier": "tier2_fast",
+      "active": false,
+      "skills": {
+        "animation": 1,
+        "tech_art": 1
+      },
+      "weak": {},
+      "note": "Benched. Set active to true to add to the office."
+    },
+    {
+      "sim_id": "0449",
+      "name": "image-reference-workflow",
+      "kind": "skill",
+      "role": "skill",
+      "dept": "art_anim",
+      "tier": "tier2_fast",
+      "active": false,
+      "skills": {
+        "tech_art": 2
+      },
+      "weak": {},
+      "note": "Benched. Set active to true to add to the office."
+    },
+    {
+      "sim_id": "0450",
+      "name": "img2threejs",
+      "kind": "skill",
+      "role": "skill",
+      "dept": "pipeline",
+      "tier": "tier2_fast",
+      "active": false,
+      "skills": {
+        "tools_scripting": 2,
+        "tech_art": 1
+      },
+      "weak": {},
+      "note": "Benched. Set active to true to add to the office."
+    },
+    {
+      "sim_id": "0451",
+      "name": "motion-reference-workflow",
+      "kind": "skill",
+      "role": "skill",
+      "dept": "art_anim",
+      "tier": "tier2_fast",
+      "active": false,
+      "skills": {
+        "animation": 2
+      },
+      "weak": {},
+      "note": "Benched. Set active to true to add to the office."
+    },
+    {
+      "sim_id": "0452",
+      "name": "video-watch",
+      "kind": "skill",
+      "role": "skill",
+      "dept": "pipeline",
+      "tier": "tier2_fast",
+      "active": false,
+      "skills": {
+        "tools_scripting": 2,
+        "qa_testing": 1
+      },
+      "weak": {},
+      "note": "Benched. Set active to true to add to the office."
+    },
+    {
+      "sim_id": "0453",
+      "name": "voice-dictation-setup",
+      "kind": "skill",
+      "role": "skill",
+      "dept": "pipeline",
+      "tier": "tier2_fast",
+      "active": false,
+      "skills": {
+        "tools_scripting": 1,
+        "audio": 1
+      },
+      "weak": {},
+      "note": "Benched. Set active to true to add to the office."
+    },
+    {
+      "sim_id": "0454",
+      "name": "workspace-authoring",
+      "kind": "skill",
+      "role": "skill",
+      "dept": "design",
+      "tier": "tier2_fast",
+      "active": false,
+      "skills": {
+        "documentation": 3
+      },
+      "weak": {},
+      "note": "Benched. Set active to true to add to the office."
+    },
+    {
+      "sim_id": "0455",
+      "name": "Chatterbox",
+      "kind": "tool",
+      "role": "tool",
+      "dept": "design",
+      "tier": "tier2_fast",
+      "active": false,
+      "skills": {
+        "audio": 2
+      },
+      "weak": {},
+      "note": "Benched. Set active to true to add to the office."
+    },
+    {
+      "sim_id": "0456",
+      "name": "OpenVoice",
+      "kind": "tool",
+      "role": "tool",
+      "dept": "design",
+      "tier": "tier2_fast",
+      "active": false,
+      "skills": {
+        "audio": 2
+      },
+      "weak": {},
+      "note": "Benched. Set active to true to add to the office."
+    },
+    {
+      "sim_id": "0457",
+      "name": "ship",
+      "kind": "skill",
+      "role": "skill",
+      "dept": "devops",
+      "tier": "tier2_fast",
+      "active": true,
+      "skills": {
+        "devops_build": 2,
+        "tools_scripting": 1,
+        "documentation": 1
+      },
+      "weak": {},
+      "note": "Blueprint skill pool (.claude/skills)."
+    },
+    {
+      "sim_id": "0458",
+      "name": "learn",
+      "kind": "skill",
+      "role": "skill",
+      "dept": "memory",
+      "tier": "tier2_fast",
+      "active": true,
+      "skills": {
+        "documentation": 2,
+        "systems_design": 1
+      },
+      "weak": {},
+      "note": "Blueprint skill pool (.claude/skills)."
+    },
+    {
+      "sim_id": "0459",
+      "name": "recall",
+      "kind": "skill",
+      "role": "skill",
+      "dept": "memory",
+      "tier": "tier2_fast",
+      "active": true,
+      "skills": {
+        "documentation": 2,
+        "debugging": 1
+      },
+      "weak": {},
+      "note": "Blueprint skill pool (.claude/skills)."
+    },
+    {
+      "sim_id": "0460",
+      "name": "skill-factory",
+      "kind": "skill",
+      "role": "skill",
+      "dept": "lab",
+      "tier": "tier2_fast",
+      "active": true,
+      "skills": {
+        "tools_scripting": 2,
+        "systems_design": 1
+      },
+      "weak": {},
+      "note": "Blueprint skill pool (.claude/skills)."
+    },
+    {
+      "sim_id": "0461",
+      "name": "unreal-verify",
+      "kind": "skill",
+      "role": "skill",
+      "dept": "qa_lab",
+      "tier": "tier2_fast",
+      "active": true,
+      "skills": {
+        "qa_testing": 2,
+        "ue5_cpp": 1
+      },
+      "weak": {},
+      "note": "Blueprint skill pool (.claude/skills)."
+    },
+    {
+      "sim_id": "0462",
+      "name": "animation-harvest",
+      "kind": "skill",
+      "role": "skill",
+      "dept": "prod_anim",
+      "tier": "tier2_fast",
+      "active": true,
+      "skills": {
+        "animation": 2,
+        "tech_art": 1
+      },
+      "weak": {},
+      "note": "Blueprint skill pool (.claude/skills)."
+    },
+    {
+      "sim_id": "0463",
+      "name": "Gemini",
+      "kind": "chat",
+      "role": "assistant",
+      "dept": "exec_mind",
+      "tier": "tier0_deterministic",
+      "active": true,
+      "skills": {},
+      "weak": {},
+      "no_auto": true,
+      "note": "Phone chat assistant. Conversation only; sits at its desk and uses the Sim phone while the owner talks to Gemini on their phone."
+    },
+    {
+      "sim_id": "0464",
+      "name": "ChatGPT",
+      "kind": "chat",
+      "role": "assistant",
+      "dept": "exec_mind",
+      "tier": "tier0_deterministic",
+      "active": true,
+      "skills": {},
+      "weak": {},
+      "no_auto": true,
+      "note": "Phone chat assistant. Conversation only; sits at its desk and uses the Sim phone while the owner talks to ChatGPT on their phone."
+    }
+  ]
+}

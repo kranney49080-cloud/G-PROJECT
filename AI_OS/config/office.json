@@ -1,0 +1,676 @@
+{
+  "_comment": "Agentic 3D office. Zones follow the owner's 'AI Game Dev Multi-Agent Architecture' blueprint image. Coordinates are lot tiles on a 24x20 lot. 'waypoint' = Sims 4 object id (null until captured in game; brain falls back to default_waypoint). Sims are named after the real AI clients, agents, tools and skills.",
+  "version": 6,
+  "lot": {
+    "w": 24,
+    "h": 20
+  },
+  "default_waypoint": 10583,
+  "departments": {
+    "exec_mind": {
+      "label": "Creative Hub & Executive Mind",
+      "skills": [
+        "systems_design",
+        "narrative"
+      ],
+      "room": {
+        "x": 0,
+        "y": 0,
+        "w": 8,
+        "h": 6
+      },
+      "desks": [
+        "X1",
+        "X2",
+        "X3",
+        "X4",
+        "GEM",
+        "GPT"
+      ]
+    },
+    "lab": {
+      "label": "Process Optimization & Agent Lifecycle Lab (glass)",
+      "skills": [],
+      "room": {
+        "x": 9,
+        "y": 0,
+        "w": 8,
+        "h": 6
+      },
+      "desks": [
+        "LAB1",
+        "LAB2",
+        "LAB3"
+      ]
+    },
+    "vault": {
+      "label": "Digital Vault & Database Hub (fenced racks)",
+      "skills": [],
+      "room": {
+        "x": 18,
+        "y": 0,
+        "w": 6,
+        "h": 6
+      },
+      "desks": [
+        "V1",
+        "V2"
+      ]
+    },
+    "memory": {
+      "label": "Permanent Memory & Learning (Reflexion)",
+      "skills": [
+        "documentation"
+      ],
+      "room": {
+        "x": 0,
+        "y": 7,
+        "w": 6,
+        "h": 5
+      },
+      "desks": [
+        "M1",
+        "M2",
+        "M3"
+      ]
+    },
+    "apex": {
+      "label": "The Director's Central Apex",
+      "skills": [],
+      "room": {
+        "x": 9,
+        "y": 8,
+        "w": 6,
+        "h": 5
+      },
+      "desks": [
+        "DIR"
+      ]
+    },
+    "hitl": {
+      "label": "Human-in-the-Loop Evaluation Gate",
+      "skills": [],
+      "room": {
+        "x": 16,
+        "y": 7,
+        "w": 8,
+        "h": 5
+      },
+      "desks": [
+        "H1",
+        "H2"
+      ]
+    },
+    "core": {
+      "label": "Core, Code & Testing",
+      "skills": [
+        "gameplay_programming",
+        "ue5_cpp",
+        "blueprints",
+        "debugging",
+        "performance"
+      ],
+      "room": {
+        "x": 0,
+        "y": 13,
+        "w": 7,
+        "h": 4
+      },
+      "desks": [
+        "C1",
+        "C2",
+        "C3"
+      ]
+    },
+    "qa_lab": {
+      "label": "Secure Critic / QA Lab (glass)",
+      "skills": [
+        "qa_testing"
+      ],
+      "room": {
+        "x": 0,
+        "y": 17,
+        "w": 7,
+        "h": 3
+      },
+      "desks": [
+        "Q1",
+        "Q2",
+        "Q3"
+      ]
+    },
+    "devops": {
+      "label": "DevOps, Build & Git Branching Pipeline",
+      "skills": [
+        "tools_scripting",
+        "devops_build"
+      ],
+      "room": {
+        "x": 8,
+        "y": 14,
+        "w": 7,
+        "h": 6
+      },
+      "desks": [
+        "DV1",
+        "DV2",
+        "DV3",
+        "DV4"
+      ]
+    },
+    "prod_anim": {
+      "label": "Production: Animation & Physics (protected)",
+      "skills": [
+        "animation"
+      ],
+      "room": {
+        "x": 16,
+        "y": 13,
+        "w": 8,
+        "h": 3
+      },
+      "desks": [
+        "PA1",
+        "PA2",
+        "PA3"
+      ]
+    },
+    "prod_sound": {
+      "label": "Production: Sound",
+      "skills": [
+        "audio"
+      ],
+      "room": {
+        "x": 16,
+        "y": 16,
+        "w": 3,
+        "h": 4
+      },
+      "desks": [
+        "PS1",
+        "PS2"
+      ]
+    },
+    "prod_level": {
+      "label": "Production: Level Design",
+      "skills": [
+        "level_design"
+      ],
+      "room": {
+        "x": 19,
+        "y": 16,
+        "w": 5,
+        "h": 2
+      },
+      "desks": [
+        "PL1"
+      ]
+    },
+    "prod_assets": {
+      "label": "Production: Visual Assets",
+      "skills": [
+        "tech_art"
+      ],
+      "room": {
+        "x": 19,
+        "y": 18,
+        "w": 5,
+        "h": 2
+      },
+      "desks": [
+        "PV1",
+        "PV2",
+        "PV3",
+        "PV4",
+        "PV5",
+        "PV6"
+      ]
+    }
+  },
+  "desks": {
+    "X1": {
+      "dept": "exec_mind",
+      "x": 1,
+      "y": 1,
+      "waypoint": 410416157465248428
+    },
+    "X2": {
+      "dept": "exec_mind",
+      "x": 3,
+      "y": 1,
+      "waypoint": 410416157483205305
+    },
+    "X3": {
+      "dept": "exec_mind",
+      "x": 5,
+      "y": 1,
+      "waypoint": 410416157483008696
+    },
+    "X4": {
+      "dept": "exec_mind",
+      "x": 7,
+      "y": 1,
+      "waypoint": 655862333802615126
+    },
+    "LAB1": {
+      "dept": "lab",
+      "x": 10,
+      "y": 1,
+      "waypoint": 655862333785510217
+    },
+    "LAB2": {
+      "dept": "lab",
+      "x": 12,
+      "y": 1,
+      "waypoint": 655862333805564248
+    },
+    "LAB3": {
+      "dept": "lab",
+      "x": 14,
+      "y": 1,
+      "waypoint": null
+    },
+    "V1": {
+      "dept": "vault",
+      "x": 19,
+      "y": 1,
+      "waypoint": null
+    },
+    "V2": {
+      "dept": "vault",
+      "x": 21,
+      "y": 1,
+      "waypoint": null
+    },
+    "M1": {
+      "dept": "memory",
+      "x": 1,
+      "y": 8,
+      "waypoint": 655862333804515671
+    },
+    "M2": {
+      "dept": "memory",
+      "x": 3,
+      "y": 8,
+      "waypoint": 655862333800780114
+    },
+    "M3": {
+      "dept": "memory",
+      "x": 5,
+      "y": 8,
+      "waypoint": null
+    },
+    "DIR": {
+      "dept": "apex",
+      "x": 10,
+      "y": 9,
+      "waypoint": null
+    },
+    "H1": {
+      "dept": "hitl",
+      "x": 17,
+      "y": 8,
+      "waypoint": 655862333786362186
+    },
+    "H2": {
+      "dept": "hitl",
+      "x": 19,
+      "y": 8,
+      "waypoint": 655862333802418517
+    },
+    "C1": {
+      "dept": "core",
+      "x": 1,
+      "y": 14,
+      "waypoint": 655862333799731536
+    },
+    "C2": {
+      "dept": "core",
+      "x": 3,
+      "y": 14,
+      "waypoint": 655862333784789320
+    },
+    "C3": {
+      "dept": "core",
+      "x": 5,
+      "y": 14,
+      "waypoint": null
+    },
+    "Q1": {
+      "dept": "qa_lab",
+      "x": 1,
+      "y": 18,
+      "waypoint": null
+    },
+    "Q2": {
+      "dept": "qa_lab",
+      "x": 3,
+      "y": 18,
+      "waypoint": null
+    },
+    "Q3": {
+      "dept": "qa_lab",
+      "x": 5,
+      "y": 18,
+      "waypoint": null
+    },
+    "DV1": {
+      "dept": "devops",
+      "x": 9,
+      "y": 15,
+      "waypoint": 655862333794029899
+    },
+    "DV2": {
+      "dept": "devops",
+      "x": 11,
+      "y": 15,
+      "waypoint": 655862333794619724
+    },
+    "DV3": {
+      "dept": "devops",
+      "x": 13,
+      "y": 15,
+      "waypoint": 655862333800059217
+    },
+    "DV4": {
+      "dept": "devops",
+      "x": 9,
+      "y": 17,
+      "waypoint": 655862333798945102
+    },
+    "PA1": {
+      "dept": "prod_anim",
+      "x": 17,
+      "y": 14,
+      "waypoint": null
+    },
+    "PA2": {
+      "dept": "prod_anim",
+      "x": 19,
+      "y": 14,
+      "waypoint": null
+    },
+    "PA3": {
+      "dept": "prod_anim",
+      "x": 21,
+      "y": 14,
+      "waypoint": null
+    },
+    "PS1": {
+      "dept": "prod_sound",
+      "x": 17,
+      "y": 17,
+      "waypoint": null
+    },
+    "PS2": {
+      "dept": "prod_sound",
+      "x": 17,
+      "y": 19,
+      "waypoint": null
+    },
+    "PL1": {
+      "dept": "prod_level",
+      "x": 20,
+      "y": 17,
+      "waypoint": null
+    },
+    "PV1": {
+      "dept": "prod_assets",
+      "x": 20,
+      "y": 19,
+      "waypoint": null
+    },
+    "PV2": {
+      "dept": "prod_assets",
+      "x": 22,
+      "y": 19,
+      "waypoint": null
+    },
+    "PV3": {
+      "dept": "prod_assets",
+      "x": 20,
+      "y": 21,
+      "waypoint": null
+    },
+    "PV4": {
+      "dept": "prod_assets",
+      "x": 22,
+      "y": 21,
+      "waypoint": null
+    },
+    "PV5": {
+      "dept": "prod_assets",
+      "x": 20,
+      "y": 23,
+      "waypoint": null
+    },
+    "PV6": {
+      "dept": "prod_assets",
+      "x": 22,
+      "y": 23,
+      "waypoint": null
+    },
+    "GEM": {
+      "dept": "exec_mind",
+      "x": 2,
+      "y": 4,
+      "waypoint": 410416157767238667
+    },
+    "GPT": {
+      "dept": "exec_mind",
+      "x": 4,
+      "y": 4,
+      "waypoint": 410416157767500812
+    }
+  },
+  "staff": {
+    "0417": {
+      "name": "Claude",
+      "home_desk": "X1",
+      "zone": "exec_mind"
+    },
+    "0418": {
+      "name": "Antigravity",
+      "home_desk": "X2",
+      "zone": "exec_mind"
+    },
+    "0420": {
+      "name": "Planner",
+      "home_desk": "X3",
+      "zone": "exec_mind"
+    },
+    "0419": {
+      "name": "Codex",
+      "home_desk": "X4",
+      "zone": "exec_mind"
+    },
+    "0460": {
+      "name": "skill-factory",
+      "home_desk": "LAB1",
+      "zone": "lab"
+    },
+    "0442": {
+      "name": "plan",
+      "home_desk": "LAB2",
+      "zone": "lab"
+    },
+    "0425": {
+      "name": "ClickUp",
+      "home_desk": "LAB3",
+      "zone": "lab"
+    },
+    "0427": {
+      "name": "Google Drive",
+      "home_desk": "V1",
+      "zone": "vault"
+    },
+    "0459": {
+      "name": "recall",
+      "home_desk": "M1",
+      "zone": "memory"
+    },
+    "0458": {
+      "name": "learn",
+      "home_desk": "M2",
+      "zone": "memory"
+    },
+    "0414": {
+      "name": "Pip",
+      "home_desk": "M3",
+      "zone": "memory"
+    },
+    "0423": {
+      "name": "Reviewer",
+      "home_desk": "H1",
+      "zone": "hitl"
+    },
+    "0413": {
+      "name": "Sim 0413",
+      "home_desk": "H2",
+      "zone": "hitl"
+    },
+    "0421": {
+      "name": "Coder",
+      "home_desk": "C1",
+      "zone": "core"
+    },
+    "0416": {
+      "name": "Titan",
+      "home_desk": "C2",
+      "zone": "core"
+    },
+    "0422": {
+      "name": "Tester",
+      "home_desk": "Q1",
+      "zone": "qa_lab"
+    },
+    "0461": {
+      "name": "unreal-verify",
+      "home_desk": "Q2",
+      "zone": "qa_lab"
+    },
+    "0440": {
+      "name": "gameplay-visual-review",
+      "home_desk": "Q3",
+      "zone": "qa_lab"
+    },
+    "0426": {
+      "name": "GitHub",
+      "home_desk": "DV1",
+      "zone": "devops"
+    },
+    "0434": {
+      "name": "FFmpeg",
+      "home_desk": "DV2",
+      "zone": "devops"
+    },
+    "0424": {
+      "name": "PinWright",
+      "home_desk": "DV3",
+      "zone": "devops"
+    },
+    "0457": {
+      "name": "ship",
+      "home_desk": "DV4",
+      "zone": "devops"
+    },
+    "0415": {
+      "name": "Dash",
+      "home_desk": "DV1",
+      "zone": "devops"
+    },
+    "0429": {
+      "name": "Cascadeur",
+      "home_desk": "PA1",
+      "zone": "prod_anim"
+    },
+    "0430": {
+      "name": "Blender",
+      "home_desk": "PA2",
+      "zone": "prod_anim"
+    },
+    "0435": {
+      "name": "game-animation-integration",
+      "home_desk": "PA3",
+      "zone": "prod_anim"
+    },
+    "0462": {
+      "name": "animation-harvest",
+      "home_desk": "PA1",
+      "zone": "prod_anim"
+    },
+    "0428": {
+      "name": "ElevenLabs",
+      "home_desk": "PS1",
+      "zone": "prod_sound"
+    },
+    "0436": {
+      "name": "game-audio-workflow",
+      "home_desk": "PS2",
+      "zone": "prod_sound"
+    },
+    "0437": {
+      "name": "game-level-design",
+      "home_desk": "PL1",
+      "zone": "prod_level"
+    },
+    "0431": {
+      "name": "Tripo",
+      "home_desk": "PV1",
+      "zone": "prod_assets"
+    },
+    "0432": {
+      "name": "ComfyUI",
+      "home_desk": "PV2",
+      "zone": "prod_assets"
+    },
+    "0433": {
+      "name": "Meshy",
+      "home_desk": "PV3",
+      "zone": "prod_assets"
+    },
+    "0441": {
+      "name": "materials-to-game",
+      "home_desk": "PV4",
+      "zone": "prod_assets"
+    },
+    "0439": {
+      "name": "game-vfx-workflow",
+      "home_desk": "PV5",
+      "zone": "prod_assets"
+    },
+    "0438": {
+      "name": "game-ui-workflow",
+      "home_desk": "PV6",
+      "zone": "prod_assets"
+    },
+    "0463": {
+      "name": "Gemini",
+      "home_desk": "GEM",
+      "zone": "exec_mind"
+    },
+    "0464": {
+      "name": "ChatGPT",
+      "home_desk": "GPT",
+      "zone": "exec_mind"
+    }
+  },
+  "meeting": "LAB1",
+  "max_present": 8,
+  "_shift_note": "Only max_present Sims are on the lot at once: those working a task. The rest are remote (brain only).",
+  "rules": {
+    "protected_zone": "prod_anim",
+    "protected_note": "Claude-only for rigs, bones, skeletons, sockets, retargeting, skin weights, root motion, notifies. No Antigravity/Gemini.",
+    "locked": [
+      "Codex",
+      "Meshy",
+      "PinWright"
+    ],
+    "locked_note": "Codex: owner approval only. Meshy: no API key. PinWright: production routing blocked until .uproject and connection agree."
+  },
+  "sessions": {
+    "lifecycle_lab": "Every Wednesday and Saturday 08:00 (from the blueprint image): weekly performance review and agent tuning."
+  },
+  "staff_note_director": "DIR desk is for the human director's Sim (you). Not an AI roster entry.",
+  "_waypoints_note": "Auto-assigned 2026-10-14 from gp.dump (lot_objects.json): 16 real desks mapped to nearest-purpose departments by cluster. Desks not listed stay null (brain falls back to default_waypoint). Edit freely."
+}
